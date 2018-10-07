@@ -1,7 +1,7 @@
 
 /**
  * Representa uma Casa do tabuleiro.
- * Possui uma posi�ao (i,j) e pode conter uma Pe�a.
+ * Possui uma posicao (x,y) e pode conter uma Peca.
  * 
  * @author Alan Moraes &lt;alan@ci.ufpb.br&gt;
  * @author Leonardo Villeth &lt;lvilleth@cc.ci.ufpb.br&gt;
@@ -26,20 +26,6 @@ public class Casa {
     }
     
     /**
-     * @return x (a linha do tabuleiro que a casa está).
-     */
-    public int getX(){
-        return x;
-    }
-    
-    /**
-     * @return y a coluna do tabuleiro que a casa esta. 
-     */
-    public int getY(){
-        return y;
-    }
-    
-    /**
      * Remove a peca posicionada nesta casa, se houver.
      */
     public void removerPeca() {
@@ -51,6 +37,14 @@ public class Casa {
      */
     public Peca getPeca() {
         return peca;
+    }
+    
+    public int getX(){
+        return x;
+    }
+    
+    public int getY(){
+        return y;
     }
     
     /**

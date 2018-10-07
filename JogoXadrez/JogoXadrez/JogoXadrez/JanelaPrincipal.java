@@ -1,12 +1,12 @@
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+
 /**
  * Tela do jogo.
- * Respons�vel por reagir aos cliques feitos pelo jogador.
+ * Responsavel por reagir aos cliques feitos pelo jogador.
  * 
  * @author Alan Moraes &lt;alan@ci.ufpb.br&gt;
  * @author Leonardo Villeth &lt;lvilleth@cc.ci.ufpb.br&gt;
@@ -18,29 +18,44 @@ public class JanelaPrincipal extends JFrame {
     private CasaGUI casaClicadaOrigem;
     private CasaGUI casaClicadaDestino;
     
+    
     /**
      * Responde aos cliques realizados no tabuleiro.
      * 
      * @param casaClicada Casa que o jogador clicou.
      */
     public void reagir(CasaGUI casaClicada) {
-        if (primeiroClique) {
-            if (casaClicada.possuiPeca()) {
+        if (primeiroClique && !jogo.jogoAcaba()) {
+            if (casaClicada.possuiPeca()){
                 casaClicadaOrigem = casaClicada;
                 casaClicadaOrigem.destacar();
                 primeiroClique = false;
-                
+                jogo.jogadorAtual = casaClicadaOrigem.getCorPeca();
             }
             else {
                 // clicou em uma posicao invalida, entao nao faz nada.
                 JOptionPane.showMessageDialog(this, "Clique em uma peça.");
             }
-        }
-        else {
+        }else if(primeiroClique && jogo.jogoAcaba()){
+            if(jogo.getVencedor() == CasaGUI.PECA_BRANCA){
+                JOptionPane.showMessageDialog(this, "O JOGO ACABOU\nTIME BRANCO VENCE");
+            }else{
+                JOptionPane.showMessageDialog(this, "O JOGO ACABOU\nTIME VERMELHO VENCE");
+            }
+            casaClicadaOrigem.atenuar();
+            primeiroClique = true;
+            atualizar();
+        }else{
             casaClicadaDestino = casaClicada;
-        
-                jogo.moverPeca(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
+            
+            if(jogo.jogadorAnterior != jogo.jogadorAtual){
+                jogo.jogadorAnterior = casaClicadaOrigem.getCorPeca();
+                jogo.moverPeca(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(),
                                casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
+            }else{
+                //tentou jogar duas vezes
+                JOptionPane.showMessageDialog(this, "Nao e sua vez.");
+            }
             
             casaClicadaOrigem.atenuar();
             primeiroClique = true;
@@ -48,7 +63,6 @@ public class JanelaPrincipal extends JFrame {
         }
     }
     
-
     /**
      * Construtor da classe.
      */

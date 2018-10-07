@@ -42,13 +42,7 @@ public class TabuleiroGUI extends JPanel {
             }
         }
     }
-    
-    
-    public CasaGUI getCasaGUI(int x, int y) {        
-        return casas[x][y];
-    }
-    
-    
+
     private Color calcularCor(int x, int y) {
         // linha par
         if (x % 2 == 0) {
@@ -88,41 +82,17 @@ public class TabuleiroGUI extends JPanel {
                     Peca peca = casa.getPeca();
 
                     switch (peca.getTipo()) {
-                        case Peca.BISPO_PRETO:
-                            casaGUI.colocarBispoPreto();
+                        case Peca.PEDRA_BRANCA:
+                            casaGUI.colocarPedraBranca();
                             break;
-                        case Peca.BISPO_BRANCO:
-                            casaGUI.colocarBispoBranco();
+                        case Peca.DAMA_BRANCA:
+                            casaGUI.colocarDamaBranca();
                             break;
-                        case Peca.PEAO_PRETO:
-                            casaGUI.colocarPeaoPreto();
+                        case Peca.PEDRA_VERMELHA:
+                            casaGUI.colocarPedraVermelha();
                             break;
-                        case Peca.PEAO_BRANCO:
-                            casaGUI.colocarPeaoBranco();
-                            break;
-                        case Peca.TORRE_BRANCO:
-                            casaGUI.colocarTorreBranco();
-                            break;
-                        case Peca.TORRE_PRETO:
-                            casaGUI.colocarTorrePreto();
-                            break;
-                        case Peca.CAVALO_PRETO:
-                            casaGUI.colocarCavaloPreto();
-                            break;
-                        case Peca.CAVALO_BRANCO:
-                            casaGUI.colocarCavaloBranco();
-                            break;
-                        case Peca.RAINHA_PRETO:
-                            casaGUI.colocarRainhaPreta();
-                            break;
-                        case Peca.RAINHA_BRANCO:
-                            casaGUI.colocarRainhaBranca();
-                            break;
-                        case Peca.REI_BRANCO:
-                            casaGUI.colocarReiBranco();
-                            break;
-                        case Peca.REI_PRETO:
-                            casaGUI.colocarReiPreto();
+                        case Peca.DAMA_VERMELHA:
+                            casaGUI.colocarDamaVermelha();
                             break;
                     }
                 }

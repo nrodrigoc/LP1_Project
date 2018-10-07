@@ -1,0 +1,21 @@
+
+/**
+ * Escreva a descrição da classe Bispo aqui.
+ * 
+ * @author (seu nome) 
+ * @version (número de versão ou data)
+ */
+public class Bispo extends Peca
+{
+    private Casa casa;
+    private int tipo;
+
+    /**
+     * Construtor para objetos da classe Torre
+     */
+    public Bispo(Casa casa, int tipo)
+    {
+        super(casa, tipo);
+        
+    }
+}

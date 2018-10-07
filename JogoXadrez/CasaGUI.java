@@ -17,20 +17,29 @@ import javax.swing.JButton;
 public class CasaGUI extends JButton {
 
     // Constantes 
-    public static final Color COR_CLARA = new Color(182, 155, 76);
-    public static final Color COR_ESCURA = new Color(65, 41, 1);
+    public static final Color COR_CLARA = new Color(190, 190, 190);
+    public static final Color COR_ESCURA = new Color(204,50,153);
     private static final Color COR_DESTAQUE = new Color(0, 1, 0, 0.4f);
     
     // Icones das pecas
-    private static final Icon PEDRA_BRANCA = new ImageIcon("pecas/damas/dama_branca_70x70.png");
-    private static final Icon DAMA_BRANCA = new ImageIcon("pecas/damas/dama_branca_rainha_70x70.png");
-    private static final Icon PEDRA_VERMELHA = new ImageIcon("pecas/damas/dama_vermelha_70x70.png");
-    private static final Icon DAMA_VERMELHA = new ImageIcon("pecas/damas/dama_vermelha_rainha_70x70.png");
+    private static final Icon BISPO_PRETO = new ImageIcon("PecasXadrez/bishop_black.png");
+    private static final Icon BISPO_BRANCO = new ImageIcon("PecasXadrez/bishop_white.png");
+    private static final Icon PEAO_BRANCO = new ImageIcon("PecasXadrez/pawn_white.png");
+    private static final Icon PEAO_PRETO = new ImageIcon("PecasXadrez/pawn_black.png");
+    private static final Icon TORRE_BRANCO = new ImageIcon("PecasXadrez/tower_white.png");
+    private static final Icon TORRE_PRETO = new ImageIcon("PecasXadrez/tower_black.png");
+    private static final Icon CAVALO_BRANCO = new ImageIcon("PecasXadrez/knight_white.png");
+    private static final Icon CAVALO_PRETO = new ImageIcon("PecasXadrez/knight_black.png");
+    private static final Icon RAINHA_BRANCO = new ImageIcon("PecasXadrez/queen_white.png");
+    private static final Icon RAINHA_PRETO = new ImageIcon("PecasXadrez/queen_black.png");
+    private static final Icon REI_BRANCO = new ImageIcon("PecasXadrez/king_white.png");
+    private static final Icon REI_PRETO = new ImageIcon("PecasXadrez/king_black.png");
+    
     
     // Cores das pecas
     public static final int SEM_PECA = -1;
     public static final int PECA_BRANCA = 0;
-    public static final int PECA_VERMELHA = 1;
+    public static final int PECA_PRETA = 1;
     
 
     private int x;
@@ -65,22 +74,54 @@ public class CasaGUI extends JButton {
         return y;
     }
 
-    public void colocarPedraBranca() {
-        setIcon(PEDRA_BRANCA);
+    public void colocarBispoPreto() {
+        setIcon(BISPO_PRETO);
     }
 
-    public void colocarPedraVermelha() {
-        setIcon(PEDRA_VERMELHA);
+    public void colocarBispoBranco() {
+        setIcon(BISPO_BRANCO);
+    }
+    
+    public void colocarPeaoBranco() {
+        setIcon(PEAO_BRANCO);
     }
 
-    public void colocarDamaBranca() {
-        setIcon(DAMA_BRANCA);
+    public void colocarPeaoPreto() {
+        setIcon(PEAO_PRETO);
     }
-
-    public void colocarDamaVermelha() {
-        setIcon(DAMA_VERMELHA);
+    
+    public void colocarTorreBranco() {
+        setIcon(TORRE_BRANCO);
     }
-
+    
+    public void colocarTorrePreto() {
+        setIcon(TORRE_PRETO);
+    }
+    
+    public void colocarCavaloPreto() {
+        setIcon(CAVALO_PRETO);
+    }
+    
+    public void colocarCavaloBranco() {
+        setIcon(CAVALO_BRANCO);
+    }
+    
+    public void colocarRainhaPreta() {
+        setIcon(RAINHA_PRETO);
+    }
+    
+    public void colocarRainhaBranca() {
+        setIcon(RAINHA_BRANCO);
+    }
+    
+    public void colocarReiBranco() {
+        setIcon(REI_BRANCO);
+    }
+    
+    public void colocarReiPreto() {
+        setIcon(REI_PRETO);
+    }
+    
     public void removerPeca() {
         setIcon(null);
     }
@@ -92,11 +133,11 @@ public class CasaGUI extends JButton {
     public int getCorPeca() {
         Icon icone = getIcon();
         
-        if (icone == PEDRA_BRANCA || icone == DAMA_BRANCA) {
+        if (icone == BISPO_BRANCO || icone == PEAO_BRANCO || icone == TORRE_BRANCO || icone == CAVALO_BRANCO || icone == RAINHA_BRANCO || icone == REI_BRANCO) {
             return PECA_BRANCA;
         }
-        else if (icone == PEDRA_VERMELHA || icone == DAMA_VERMELHA) {
-             return PECA_VERMELHA;
+        else if (icone == BISPO_PRETO || icone == PEAO_PRETO || icone == TORRE_PRETO || icone == CAVALO_PRETO || icone == RAINHA_PRETO || icone == REI_PRETO) {
+             return PECA_PRETA;
         }
         else {
             return SEM_PECA;
@@ -110,7 +151,8 @@ public class CasaGUI extends JButton {
     public void atenuar() {
         setBackground(cor);
     }
-
+    
+    
     /**
      * Pinta o componente com a cor de fundo, aceita valores RGBA
      */
