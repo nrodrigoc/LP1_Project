@@ -1,12 +1,13 @@
 import java.util.ArrayList;
+
 /**
- * Representa uma Pe�a do jogo.
+ * Representa uma Peca do jogo.
  * Possui uma casa e um tipo associado.
  * 
  * @author Alan Moraes &lt;alan@ci.ufpb.br&gt;
  * @author Leonardo Villeth &lt;lvilleth@cc.ci.ufpb.br&gt;
  */
-public class Peca {
+public  class Peca {
     
     public static final int BISPO_BRANCO = 0;
     public static final int PEAO_BRANCO = 1;
@@ -26,15 +27,12 @@ public class Peca {
 
     protected Casa casa;
     protected int tipo;
-    
     private int tipoGeral;
-    public int nDeJogadas;
     
     public Peca(Casa casa, int tipo) {
         this.casa = casa;
         this.tipo = tipo;
         casa.colocarPeca(this);
-        nDeJogadas = 0;
         //pecas = new ArrayList<Peca>();
     }
     
@@ -54,10 +52,12 @@ public class Peca {
      * @param capturada a casa que conter a peça que será capturada.
      */
     public void capturar(Casa destino) {
-       casa.removerPeca();
-       destino.removerPeca();
-       destino.colocarPeca(this);
-       casa = destino;
+        if(destino.possuiPeca() && (getTipoGeral() != destino.getPeca().getTipoGeral())){
+            casa.removerPeca();
+            destino.removerPeca();
+            destino.colocarPeca(this);
+            casa = destino;
+        }
     }
     
     /**
@@ -74,15 +74,17 @@ public class Peca {
      *   9   Preto (Cavalo)
      *   10  Preto (Rainha)
      *   11  Preto (Rei)
-     *   
      * @return o tipo da peca.
      */
     public int getTipo() {
         return tipo;
     }
     
-  
-    
+    /**
+     * Valor       Tipo
+     *  12     Peças Brancas 
+     *  13     Peças Pretas
+     */
     public int getTipoGeral() {
         if(getTipo() == 0 || getTipo() == 1 || getTipo() == 2 || getTipo() == 3 || getTipo() == 4 || getTipo() == 5){
             tipoGeral = 12;

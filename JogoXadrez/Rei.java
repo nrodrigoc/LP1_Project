@@ -21,7 +21,7 @@ public class Rei extends Peca
      * Movimenta o Rei para uma nova casa
      * @param destino nova casa que irá conter o Rei
      */
-    public void movimento(Casa destino){
+    public void mover(Casa destino){
         //if - movimentação para cima, para baixo e para os lados
         //else if - movimentação nas diagonais x+1 e y+1 ou x-1 e y-1
         //else if - movimentação nas diagonais x+1 e y-1 ou x-1 e y+1

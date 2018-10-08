@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 /**
  * Armazena o tabuleiro e responsavel por posicionar as pecas.
  * 
@@ -10,20 +8,18 @@ public class Jogo {
 
     private Tabuleiro tabuleiro;
     
-    private ArrayList<Peca> peoes_pretos;
     
     public Jogo() {
-        
-        peoes_pretos = new ArrayList<>();
         tabuleiro = new Tabuleiro();
         criarPecas();
     }
     
     /**
      * Posiciona pecas no tabuleiro.
-     * Utilizado na inicializacao do jogo.
+     * Utilizado na inicializa�ao do jogo.
      */
     private void criarPecas() {
+        //Cria objetos das subclasses com o tipo da classe mãe
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 2; j++) {
                 if(j == 0 && (i == 0 || i == 7)) {
@@ -33,7 +29,6 @@ public class Jogo {
                 else if(j == 1){
                     Casa casa = tabuleiro.getCasa(i,j);
                     Peca peca = new Peao(casa, Peca.PEAO_BRANCO);
-                   
                 }
                 else if(j == 0 && (i == 1 || i == 6)){
                     Casa casa = tabuleiro.getCasa(i,j);
@@ -63,7 +58,6 @@ public class Jogo {
                 else if(j == 6){
                     Casa casa = tabuleiro.getCasa(i,j);
                     Peca peca = new Peao(casa, Peca.PEAO_PRETO);
-                    peoes_pretos.add(peca);
                 }
                 else if(j == 7 && (i == 1 || i == 6)){
                     Casa casa = tabuleiro.getCasa(i,j);
@@ -85,7 +79,6 @@ public class Jogo {
         }
     }
     
-    
     /**
      * Comanda uma Pe�a na posicao (origemX, origemY) fazer um movimento 
      * para (destinoX, destinoY).
@@ -96,26 +89,28 @@ public class Jogo {
      * @param destinoY coluna da Casa de destino.
      */
     public void moverPeca(int origemX, int origemY, int destinoX, int destinoY) {
-        
         Casa origem = tabuleiro.getCasa(origemX, origemY);
         Casa destino = tabuleiro.getCasa(destinoX, destinoY);
         Peca peca = origem.getPeca();
-        
-        if(peca.getTipo() == peca.PEAO_BRANCO && peca.nDeJogadas == 0){
-            peca.mover(destino);
-        }
-        
-        
+        peca.mover(destino);
     }
     
-    public Casa getJogadasPossiveis(Peca peca, Casa casa){
-        if(peca.getTipo() == peca.PEAO_BRANCO){
-            if(peca.nDeJogadas == 1){
-                Casa c1 = tabuleiro.getCasa(casa.getX()+1, casa.getY()+1);
-                return c1;
-            }
-        }
-        return casa;
+    
+    
+    /**
+     * Comanda uma Peca na posicao (origemX, origemY) fazer um movimento 
+     * para (destinoX, destinoY).
+     * 
+     * @param origemX linha da Casa de origem.
+     * @param origemY coluna da Casa de origem.
+     * @param destinoX linha da Casa de destino.
+     * @param destinoY coluna da Casa de destino.
+     */
+    public void capturarPeca(int origemX, int origemY, int destinoX, int destinoY) {
+        Casa origem = tabuleiro.getCasa(origemX, origemY);
+        Casa destino = tabuleiro.getCasa(destinoX, destinoY);
+        Peca peca = origem.getPeca();
+        peca.capturar(destino);
     }
     
     /**

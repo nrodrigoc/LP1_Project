@@ -1,4 +1,3 @@
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
@@ -29,19 +28,22 @@ public class JanelaPrincipal extends JFrame {
                 casaClicadaOrigem = casaClicada;
                 casaClicadaOrigem.destacar();
                 primeiroClique = false;
-                
             }
             else {
-                // clicou em uma posicao invalida, entao nao faz nada.
+                // clicou em uma posi�?o inv�lida, ent?o n?o faz nada.
                 JOptionPane.showMessageDialog(this, "Clique em uma peça.");
             }
         }
         else {
             casaClicadaDestino = casaClicada;
-        
+            if(!casaClicadaDestino.possuiPeca()){
                 jogo.moverPeca(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
                                casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
-            
+            }
+            else{
+                jogo.capturarPeca(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
+                               casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
+            }
             casaClicadaOrigem.atenuar();
             primeiroClique = true;
             atualizar();
