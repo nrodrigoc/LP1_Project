@@ -6,7 +6,7 @@
  */
 public class Jogo {
 
-    private Tabuleiro tabuleiro;
+    private static Tabuleiro tabuleiro;
     
     
     public Jogo() {
@@ -111,6 +111,17 @@ public class Jogo {
         Casa destino = tabuleiro.getCasa(destinoX, destinoY);
         Peca peca = origem.getPeca();
         peca.capturar(destino);
+    }
+    
+    
+    public static boolean possuiP(int x, int y){
+        Casa c1 = tabuleiro.getCasa(x,y);
+        if(c1.possuiPeca()){
+            return true;
+        }else if(!c1.possuiPeca()){
+            return false;
+        }
+        return false;
     }
     
     /**

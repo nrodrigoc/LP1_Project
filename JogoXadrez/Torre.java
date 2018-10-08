@@ -17,43 +17,121 @@ public class Torre extends Peca
     }
 
     public void mover(Casa destino){
+        //temPeca - avalia se tem alguma peca no caminho ou se pode ir
+        boolean podeIr = false;
         //if - movimentação para cima e para baixo
         //else if - movimentação para os lados;
-        //NOVO ALGORITMO
-        for(int count = 0; count < 8; count++) {
-            if(casa.getX() == destino.getX() && 
-            (casa.getY()+count == destino.getY() || casa.getY()-count == destino.getY())){
-                super.mover(destino);
-                primeiroMovimento = true;
-                
-            }else if(casa.getY() == destino.getY() && 
-            (casa.getX()+ count == destino.getX() || casa.getX()-count == destino.getX())){
-                super.mover(destino);
-                primeiroMovimento = true;
+        //NOVO ALGORITO
+        
+        //movimentacao para cima
+        if(casa.getX() == destino.getX() && destino.getY() > casa.getY()){
+            podeIr = true;
+            for(int count = 1; count <= (destino.getY() - casa.getY()); count++){
+                if(Jogo.possuiP(casa.getX(), casa.getY()+count)){
+                    podeIr = false;
+                }
+            }
+        }
+        //movimentacao para baixo
+        else if(casa.getX() == destino.getX() && destino.getY() < casa.getY()){
+            podeIr = true;
+            for(int count = 1; count <= (casa.getY() - destino.getY()); count++){
+                if(Jogo.possuiP(casa.getX(), casa.getY()-count)){
+                    podeIr = false;
+                }
+            }
+        }
+        //movimentacao para a direita
+        else if(casa.getY() == destino.getY() && destino.getX() > casa.getX()){
+            podeIr = true;
+            for(int count = 1; count <= (destino.getX() - casa.getX()); count++){
+                if(Jogo.possuiP(casa.getX()+count, casa.getY())){
+                    podeIr = false;
+                }
+            }
+        }
+        //movimentacao para a esquerda
+        else if(casa.getY() == destino.getY() && destino.getX() < casa.getX()){
+            podeIr = true;
+            for(int count = 1; count <= (casa.getX() - destino.getX()); count++){
+                if(Jogo.possuiP(casa.getX()-count, casa.getY())){
+                    podeIr = false;
+                }
             }
         }
         
-/*      Algoritmo anterior 
- *      if(casa.getX() == destino.getX() && (casa.getY()+1 == destino.getY() || casa.getY()-1 == destino.getY() 
-        || casa.getY()+2 == destino.getY() || casa.getY()-2 == destino.getY() || casa.getY()+3 == destino.getY() 
-        || casa.getY()-3 == destino.getY() || casa.getY()+4 == destino.getY() || casa.getY()-4 == destino.getY() 
-        || casa.getY()+5 == destino.getY() || casa.getY()-5 == destino.getY() || casa.getY()+6 == destino.getY() 
-        || casa.getY()-6 == destino.getY() || casa.getY()+7 == destino.getY() || casa.getY()-7 == destino.getY())){
+        
+      
+        
+        //Movimenta a peca, caso seja permitido
+        if(podeIr){
             super.mover(destino);
             primeiroMovimento = true;
-            return;
         }
-        else if(casa.getY() == destino.getY() && (casa.getX()+1 == destino.getX() || casa.getX()-1 == destino.getX() || casa.getX()+2 == destino.getX() || 
-                 casa.getX()-2 == destino.getX() || casa.getX()+3 == destino.getX() || casa.getX()-3 == destino.getX() || casa.getX()+4 == destino.getX() || 
-                 casa.getX()-4 == destino.getX() || casa.getX()+5 == destino.getX() || casa.getX()-5 == destino.getX() || casa.getX()+6 == destino.getX() || 
-                 casa.getX()-6 == destino.getX() || casa.getX()+7 == destino.getX() || casa.getX()-7 == destino.getX())){
-                super.mover(destino);
-                primeiroMovimento = true;
-        }*/
     }
     
     public void capturar(Casa destino){
+        //podeCapturar - avalia se pode pode capturar a peca alvo
+        boolean podeCapturar = false;
         
+        
+        
+        
+        //NOVO ALGORITmO
+        
+        //movimentacao para cima
+        if(casa.getX() == destino.getX() && destino.getY() > casa.getY()){
+            podeCapturar = true;
+            for(int count = 1; count < (destino.getY() - casa.getY()); count++){
+                if(Jogo.possuiP(casa.getX(), casa.getY()+count)){
+                    podeCapturar = false;
+                }
+            }
+        }
+        //movimentacao para baixo
+        else if(casa.getX() == destino.getX() && destino.getY() < casa.getY()){
+            podeCapturar = true;
+            for(int count = 1; count < (casa.getY() - destino.getY()); count++){
+                if(Jogo.possuiP(casa.getX(), casa.getY()-count)){
+                    podeCapturar = false;
+                }
+            }
+        }
+        //movimentacao para a direita
+        else if(casa.getY() == destino.getY() && destino.getX() > casa.getX()){
+            podeCapturar = true;
+            for(int count = 1; count < (destino.getX() - casa.getX()); count++){
+                if(Jogo.possuiP(casa.getX()+count, casa.getY())){
+                    podeCapturar = false;
+                }
+            }
+        }
+        //movimentacao para a esquerda
+        else if(casa.getY() == destino.getY() && destino.getX() < casa.getX()){
+            podeCapturar = true;
+            for(int count = 1; count < (casa.getX() - destino.getX()); count++){
+                if(Jogo.possuiP(casa.getX()-count, casa.getY())){
+                    podeCapturar = false;
+                }
+            }
+        }
+        
+        
+      
+        
+        //Captura a peca, caso seja permitido
+        if(podeCapturar){
+            super.capturar(destino);
+            primeiroMovimento = true;
+        }
+        
+        
+        
+        
+        
+        
+        
+        /*ALGORITMO ANTERIOR
         for(int count = 0; count < 8; count++) {
             if(casa.getX() == destino.getX() && 
             (casa.getY()+count == destino.getY() || casa.getY()-count == destino.getY())){
@@ -65,26 +143,14 @@ public class Torre extends Peca
                 super.capturar(destino);
                 primeiroMovimento = true;
             }
-        }        
-        
-        
-        
-        /* ALGORITMO ANTERIOR
-        *   if(casa.getX() == destino.getX() && (casa.getY()+1 == destino.getY() || casa.getY()-1 == destino.getY() 
-        *    || casa.getY()+2 == destino.getY() || casa.getY()-2 == destino.getY() || casa.getY()+3 == destino.getY() 
-        *    || casa.getY()-3 == destino.getY() || casa.getY()+4 == destino.getY() || casa.getY()-4 == destino.getY() 
-        *    || casa.getY()+5 == destino.getY() || casa.getY()-5 == destino.getY() || casa.getY()+6 == destino.getY() 
-        *    || casa.getY()-6 == destino.getY() || casa.getY()+7 == destino.getY() || casa.getY()-7 == destino.getY())){
-        *            super.capturar(destino);
-                    primeiroMovimento = true;
-            }
-            else if(casa.getY() == destino.getY() && (casa.getX()+1 == destino.getX() || casa.getX()-1 == destino.getX() || casa.getX()+2 == destino.getX() || 
-                casa.getX()-2 == destino.getX() || casa.getX()+3 == destino.getX() || casa.getX()-3 == destino.getX() || casa.getX()+4 == destino.getX() || 
-                casa.getX()-4 == destino.getX() || casa.getX()+5 == destino.getX() || casa.getX()-5 == destino.getX() || casa.getX()+6 == destino.getX() || 
-                casa.getX()-6 == destino.getX() || casa.getX()+7 == destino.getX() || casa.getX()-7 == destino.getX())){
-                    super.capturar(destino);
-                    primeiroMovimento = true;
-            }
-        */
+        }*/        
+
     }
+    
+    
+    
+    
+    
+    
+    
 }
