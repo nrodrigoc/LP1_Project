@@ -34,8 +34,7 @@ public class Rainha extends Peca
             capturaComum(destino);
         }else{
             capturaDiagonal(destino);
-        }
-        
+        }        
         
         
     }
@@ -207,6 +206,11 @@ public class Rainha extends Peca
         }        
     }    
     
+    
+    /**
+     * Captura pecas nas direcoes diagonais
+     * 
+     */
     public void capturaDiagonal(Casa destino){
         
         boolean podeIr = false;
