@@ -20,7 +20,7 @@ public class Torre extends Peca
         //if - movimentação para cima e para baixo
         //else if - movimentação para os lados;
         //NOVO ALGORITMO
-        for(int count = 0; count < 7; count++) {
+        for(int count = 0; count < 8; count++) {
             if(casa.getX() == destino.getX() && 
             (casa.getY()+count == destino.getY() || casa.getY()-count == destino.getY())){
                 super.mover(destino);
@@ -54,7 +54,7 @@ public class Torre extends Peca
     
     public void capturar(Casa destino){
         
-        for(int count = 0; count < 7; count++) {
+        for(int count = 0; count < 8; count++) {
             if(casa.getX() == destino.getX() && 
             (casa.getY()+count == destino.getY() || casa.getY()-count == destino.getY())){
                 super.capturar(destino);
