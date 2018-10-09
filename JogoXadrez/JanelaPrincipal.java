@@ -2,6 +2,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import java.util.ArrayList;
 
 /**
  * Tela do jogo.
@@ -16,6 +17,8 @@ public class JanelaPrincipal extends JFrame {
     private boolean primeiroClique;
     private CasaGUI casaClicadaOrigem;
     private CasaGUI casaClicadaDestino;
+    private ArrayList<CasaGUI> casasProvaveis;
+    private Casa origemx;
     
     /**
      * Responde aos cliques realizados no tabuleiro.
@@ -25,8 +28,16 @@ public class JanelaPrincipal extends JFrame {
     public void reagir(CasaGUI casaClicada) {
         if (primeiroClique) {
             if (casaClicada.possuiPeca()) {
-                casaClicadaOrigem = casaClicada;
+                casaClicadaOrigem = casaClicada;                
+                
+                origemx = jogo.getTabuleiro().getCasa(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY());
+                if(origemx.getPeca().getTipo() == Peca.PEAO_BRANCO){
+                    tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).destacar();
+                    tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+2).destacar();
+                }
+                
                 casaClicadaOrigem.destacar();
+                
                 primeiroClique = false;
             }
             else {
@@ -44,6 +55,13 @@ public class JanelaPrincipal extends JFrame {
                 jogo.capturarPeca(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
                                casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
             }
+            
+            /*
+            if(origemx.getPeca().getTipo() == Peca.PEAO_BRANCO){
+                tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).atenuar();
+                tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+2).atenuar();
+            }*/
+            
             casaClicadaOrigem.atenuar();
             primeiroClique = true;
             atualizar();
@@ -56,7 +74,9 @@ public class JanelaPrincipal extends JFrame {
      */
     public JanelaPrincipal() {
         initComponents();
-
+        
+        origemx = null;
+        this.casasProvaveis = new ArrayList<>();
         this.primeiroClique = true;
         this.casaClicadaOrigem = null;
         this.casaClicadaDestino = null;
