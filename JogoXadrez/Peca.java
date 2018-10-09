@@ -28,11 +28,15 @@ public  class Peca {
     protected Casa casa;
     protected int tipo;
     private int tipoGeral;
+    private int jogador;
+    protected boolean primeiroMovimento;
     
     public Peca(Casa casa, int tipo) {
+        primeiroMovimento = true;
         this.casa = casa;
         this.tipo = tipo;
         casa.colocarPeca(this);
+        this.jogador = 0;
         //pecas = new ArrayList<Peca>();
     }
     
@@ -41,9 +45,11 @@ public  class Peca {
      * @param destino nova casa que ira conter esta peca.
      */
     public void mover(Casa destino) {
-        casa.removerPeca();
-        destino.colocarPeca(this);
-        casa = destino;
+        if(!destino.possuiPeca()){
+            casa.removerPeca();
+            destino.colocarPeca(this);
+            casa = destino;
+        }    
     }
     
     /**
@@ -95,6 +101,8 @@ public  class Peca {
         return tipoGeral;
     }
     
-    
+    public boolean getMovimento(){
+        return primeiroMovimento;
+    }    
     
 }
