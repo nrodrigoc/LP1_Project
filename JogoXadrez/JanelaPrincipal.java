@@ -29,24 +29,21 @@ public class JanelaPrincipal extends JFrame {
         if (primeiroClique) {
             if (casaClicada.possuiPeca()) {
                 casaClicadaOrigem = casaClicada;                
-                
-                origemx = jogo.getTabuleiro().getCasa(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY());
-                if(origemx.getPeca().getTipo() == Peca.PEAO_BRANCO){
-                    tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).destacar();
-                    tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+2).destacar();
-                }
+                               
+                acender();
                 
                 casaClicadaOrigem.destacar();
                 
                 primeiroClique = false;
             }
-            else {
-                // clicou em uma posi�?o inv�lida, ent?o n?o faz nada.
-                JOptionPane.showMessageDialog(this, "Clique em uma peça.");
+                else {
+                    // clicou em uma posi�?o inv�lida, ent?o n?o faz nada.
+                    JOptionPane.showMessageDialog(this, "Clique em uma peça.");
+                }
             }
-        }
-        else {
+            else {
             casaClicadaDestino = casaClicada;
+            turno();
             if(!casaClicadaDestino.possuiPeca()){
                 jogo.moverPeca(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
                                casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
@@ -56,11 +53,7 @@ public class JanelaPrincipal extends JFrame {
                                casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
             }
             
-            /*
-            if(origemx.getPeca().getTipo() == Peca.PEAO_BRANCO){
-                tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).atenuar();
-                tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+2).atenuar();
-            }*/
+            apagar();
             
             casaClicadaOrigem.atenuar();
             primeiroClique = true;
@@ -68,7 +61,56 @@ public class JanelaPrincipal extends JFrame {
         }
     }
     
-
+    /**
+     * Se permitido for verdadeiro realiza a jogada.
+     * Impede uma jogada quando é a vez da outra peça.
+     */
+    private void turno(){
+        boolean permitido = jogo.jogador(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
+                               casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
+        if(permitido){
+            primeiroClique = false;
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Movimento pertence ao outro time");
+            primeiroClique = true;
+            casaClicadaOrigem.atenuar();
+        }
+    }
+        
+    
+    
+    
+    /**
+     * Destaca as casas onde a peca pode ir
+     * 
+     */
+    public void acender(){
+        origemx = jogo.getTabuleiro().getCasa(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY());
+        
+        //primeiroMov - verifica se eh o primeiro movimento da peca
+        boolean primeiroMov = origemx.getPeca().getMovimento();
+        
+        if(origemx.getPeca().getTipo() == Peca.PEAO_BRANCO && primeiroMov){
+            tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).destacar();
+            tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+2).destacar();
+            /*if(origemx.getPeca().podeComerEsquerdo()){
+                
+            }*/
+        }else if(origemx.getPeca().getTipo() == Peca.PEAO_BRANCO && !primeiroMov){
+            tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).destacar();            
+        }
+    }
+    
+    /**
+     * Atenua as casas destacadas pelo metodo acender
+     * 
+     */
+    public void apagar(){
+        tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).atenuar();
+        tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+2).atenuar();
+    }
+    
     /**
      * Construtor da classe.
      */
