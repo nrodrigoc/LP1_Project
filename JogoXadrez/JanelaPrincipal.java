@@ -17,8 +17,9 @@ public class JanelaPrincipal extends JFrame {
     private boolean primeiroClique;
     private CasaGUI casaClicadaOrigem;
     private CasaGUI casaClicadaDestino;
-    private ArrayList<CasaGUI> casasProvaveis;
-    private Casa origemx;
+    
+    private boolean primeiroMovimento;
+    
     
     /**
      * Responde aos cliques realizados no tabuleiro.
@@ -27,37 +28,37 @@ public class JanelaPrincipal extends JFrame {
      */
     public void reagir(CasaGUI casaClicada) {
         if (primeiroClique) {
-            if (casaClicada.possuiPeca()) {
-                casaClicadaOrigem = casaClicada;                
-                               
-                acender();
-                
-                casaClicadaOrigem.destacar();
-                
-                primeiroClique = false;
-            }
-                else {
+                if (casaClicada.possuiPeca()) {
+                    casaClicadaOrigem = casaClicada;
+                    acender();
+                    casaClicadaOrigem.destacar();
+                    primeiroClique = false;
+                    //turno();                
+                    
+                }else {
                     // clicou em uma posi�?o inv�lida, ent?o n?o faz nada.
                     JOptionPane.showMessageDialog(this, "Clique em uma peça.");
                 }
-            }
-            else {
-            casaClicadaDestino = casaClicada;
-            turno();
-            if(!casaClicadaDestino.possuiPeca()){
-                jogo.moverPeca(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
-                               casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
-            }
-            else{
-                jogo.capturarPeca(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
-                               casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
-            }
-            
-            apagar();
-            
-            casaClicadaOrigem.atenuar();
-            primeiroClique = true;
-            atualizar();
+            }else {
+                casaClicadaDestino = casaClicada;
+                //turno();
+                if(!casaClicadaDestino.possuiPeca()){
+                    jogo.moverPeca(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
+                                   casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
+                }else if(casaClicadaDestino.possuiPeca() && casaClicadaDestino.getCorPeca() != CasaGUI.SEM_PECA){
+                    jogo.moverPeca(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
+                                   casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
+                }
+                else{
+                    jogo.capturarPeca(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
+                                   casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
+                }
+                
+                
+                apagar();      
+                casaClicadaOrigem.atenuar();
+                primeiroClique = true;
+                atualizar();
         }
     }
     
@@ -66,6 +67,7 @@ public class JanelaPrincipal extends JFrame {
      * Impede uma jogada quando é a vez da outra peça.
      */
     private void turno(){
+
         boolean permitido = jogo.jogador(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
                                casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
         if(permitido){
@@ -86,18 +88,18 @@ public class JanelaPrincipal extends JFrame {
      * 
      */
     public void acender(){
-        origemx = jogo.getTabuleiro().getCasa(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY());
+        Casa origemx = jogo.getTabuleiro().getCasa(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY());
         
-        //primeiroMov - verifica se eh o primeiro movimento da peca
-        boolean primeiroMov = origemx.getPeca().getMovimento();
+        //primeiroMovimento - verifica se eh o primeiro movimento da peca
+        primeiroMovimento = origemx.getPeca().getMovimento();
         
-        if(origemx.getPeca().getTipo() == Peca.PEAO_BRANCO && primeiroMov){
+        if(origemx.getPeca().getTipo() == Peca.PEAO_BRANCO && primeiroMovimento){
             tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).destacar();
             tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+2).destacar();
             /*if(origemx.getPeca().podeComerEsquerdo()){
                 
             }*/
-        }else if(origemx.getPeca().getTipo() == Peca.PEAO_BRANCO && !primeiroMov){
+        }else if(origemx.getPeca().getTipo() == Peca.PEAO_BRANCO && !primeiroMovimento){
             tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).destacar();            
         }
     }
@@ -107,8 +109,14 @@ public class JanelaPrincipal extends JFrame {
      * 
      */
     public void apagar(){
-        tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).atenuar();
-        tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+2).atenuar();
+        Casa destinox = jogo.getTabuleiro().getCasa(casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
+        
+        if(destinox.getPeca().getTipo() == Peca.PEAO_BRANCO){
+            tabuleiroGUI.getCasaGUI(casaClicadaDestino.getPosicaoX(),casaClicadaDestino.getPosicaoY()).atenuar();
+            tabuleiroGUI.getCasaGUI(casaClicadaDestino.getPosicaoX(),casaClicadaDestino.getPosicaoY()-1).atenuar();
+            tabuleiroGUI.getCasaGUI(casaClicadaDestino.getPosicaoX(),casaClicadaDestino.getPosicaoY()+1).atenuar();
+            tabuleiroGUI.getCasaGUI(casaClicadaDestino.getPosicaoX(),casaClicadaDestino.getPosicaoY()+2).atenuar();
+        }
     }
     
     /**
@@ -117,8 +125,7 @@ public class JanelaPrincipal extends JFrame {
     public JanelaPrincipal() {
         initComponents();
         
-        origemx = null;
-        this.casasProvaveis = new ArrayList<>();
+        this.primeiroMovimento = false;
         this.primeiroClique = true;
         this.casaClicadaOrigem = null;
         this.casaClicadaDestino = null;

@@ -6,7 +6,7 @@
  */
 public class Rainha extends Peca
 {
-    private boolean primeiroMovimento = false;
+    
     /**
      * Construtor para objetos da classe Torre
      */

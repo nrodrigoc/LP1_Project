@@ -6,7 +6,6 @@
  */
 public class Rei extends Peca
 {
-    private boolean primeiroMovimento;
 
     /**
      * Construtor para objetos da classe Rei
@@ -38,6 +37,7 @@ public class Rei extends Peca
             super.mover(destino);
             primeiroMovimento = true;
         }
+        
     }
     
     /**
@@ -59,5 +59,6 @@ public class Rei extends Peca
             super.mover(destino);
             primeiroMovimento = true;
         }
+       
     }
 }

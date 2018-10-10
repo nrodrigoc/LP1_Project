@@ -7,7 +7,6 @@
  */
 public class Bispo extends Peca
 {
-    private boolean primeiroMovimento;
     
     /**
      * Construtor para objetos da classe Torre

@@ -96,8 +96,13 @@ public class Jogo {
         Casa destino = tabuleiro.getCasa(destinoX, destinoY);
         Peca peca = origem.getPeca();
         peca.mover(destino);
+        if(destino.getPeca() != null){
+            mudarJogador(origemX, origemY, destinoX, destinoY);
+        }
+        
         mudarJogador(origemX, origemY, destinoX, destinoY);
     }
+    
     
     
     
@@ -115,6 +120,10 @@ public class Jogo {
         Casa destino = tabuleiro.getCasa(destinoX, destinoY);
         Peca peca = origem.getPeca();
         peca.capturar(destino);
+        if(destino.getPeca() != null){
+            mudarJogador(origemX, origemY, destinoX, destinoY);
+        }
+        //invalido(origemX, origemY, destinoX,destinoY);
         mudarJogador(origemX, origemY, destinoX, destinoY);
     }
     
@@ -127,14 +136,13 @@ public class Jogo {
         }
         return false;
     }
-    public int getJogador(){
-        return jogador;
-    }
+  
+    
     public boolean jogador(int origemX, int origemY, int destinoX, int destinoY){
         Casa origem = tabuleiro.getCasa(origemX, origemY);
         Casa destino = tabuleiro.getCasa(destinoX, destinoY);
         Peca peca = origem.getPeca();
-        if(peca.getTipoGeral() == 12 && jogador == 0 || peca.getTipoGeral() == 13 && jogador == 1){
+        if(peca.getTipoGeral() == 12 &&jogador == 0 || peca.getTipoGeral() == 13 && jogador == 1){
             movimentoPermitido = true;
             return movimentoPermitido;
         }
@@ -144,6 +152,7 @@ public class Jogo {
         }
         return false;
     }
+    
     
     private void mudarJogador(int origemX, int origemY, int destinoX, int destinoY){
         Casa origem = tabuleiro.getCasa(origemX, origemY);
@@ -156,6 +165,23 @@ public class Jogo {
             jogador = 0;
         }
     }
+    
+    /*public boolean invalido(int origemX, int origemY, int destinoX, int destinoY){
+        Casa origem = tabuleiro.getCasa(origemX, origemY);
+        Casa destino = tabuleiro.getCasa(destinoX, destinoY);
+        Peca peca = origem.getPeca();
+        if(peca != null && peca.movimentoPermitido){
+            return true;
+        }
+        
+        return false;
+    }*/
+    
+    
+    public int getJogador(){
+        return jogador;
+    }
+    
     
     /**
      * @return o Tabuleiro em jogo.

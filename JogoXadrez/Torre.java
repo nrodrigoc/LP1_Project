@@ -6,7 +6,7 @@
  */
 public class Torre extends Peca
 {
-    private boolean primeiroMovimento = false;
+
     /**
      * Construtor para objetos da classe Torre
      */
@@ -68,6 +68,7 @@ public class Torre extends Peca
             super.mover(destino);
             primeiroMovimento = true;
         }
+        
     }
     
     public void capturar(Casa destino){
@@ -123,7 +124,9 @@ public class Torre extends Peca
         if(podeCapturar){
             super.capturar(destino);
             primeiroMovimento = true;
+            
         }
+        
         
         
         

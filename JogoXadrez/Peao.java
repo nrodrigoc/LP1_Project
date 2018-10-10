@@ -19,8 +19,9 @@ public class Peao extends Peca
             direcao = 1;
         }
         else if(tipo == PEAO_PRETO){
-            direcao = -1;
+            direcao =-1;
         }
+        primeiroMovimento = true;
     }
     
     /**
@@ -34,18 +35,20 @@ public class Peao extends Peca
             //if - verifica se o peão é branco e se o movimento é apenas para cima
             //else if - verifica se o peão é preto e se o movimento é apenas para baixo
             if(tipo == PEAO_BRANCO && (casa.getX() == destino.getX() && (casa.getY()+2 == destino.getY() || casa.getY()+1 == destino.getY()))){
-                 super.mover(destino);   
-                 primeiroMovimento = false;
+              super.mover(destino);   
+               primeiroMovimento = false;
             }
             else if(tipo == PEAO_PRETO && (casa.getX() == destino.getX() && (casa.getY()-2 == destino.getY() || casa.getY()-1 == destino.getY()))){
                super.mover(destino);   
                primeiroMovimento = false;
             }
+            
         }
         else if(!primeiroMovimento && !destino.possuiPeca()){
             if(casa.getX() == destino.getX() && (casa.getY()+direcao == destino.getY())){
                 super.mover(destino);  
             }
+            
         }
     }
     
@@ -58,11 +61,14 @@ public class Peao extends Peca
         if((casa.getX()+1 == destino.getX() || casa.getX()-1 == destino.getX()) && casa.getY()+direcao == destino.getY()){
                 super.capturar(destino);   
         }
+        
     }
     
+    
+    /*
     /**
      * @return se existe alguma peca ao noroeste que possa ser comida
-     */
+     *
     public boolean podeComerEsquerdo(){
         //c1 e c2 casas onde o peao comeria caso houvesse pecas
         if(casa.getX()-1 >= 0){
@@ -72,6 +78,6 @@ public class Peao extends Peca
             }
         }
         return false;
-    }
+    }*/
 
 }

@@ -24,12 +24,15 @@ public  class Peca {
     
     public static final int PECAS_BRANCAS = 12;
     public static final int PECAS_PRETAS = 13;
-
+    
     protected Casa casa;
     protected int tipo;
     private int tipoGeral;
-    private int jogador;
-    protected boolean primeiroMovimento;
+    protected int jogador;
+    public boolean movimentoPermitido;
+    
+    //primeiroMovimento - guarda "true" a peca ainda nao se movimentou na partida
+    public boolean primeiroMovimento;
     
     public Peca(Casa casa, int tipo) {
         primeiroMovimento = true;
@@ -49,8 +52,11 @@ public  class Peca {
             casa.removerPeca();
             destino.colocarPeca(this);
             casa = destino;
-        }    
-    }
+
+        }
+
+    }    
+    
     
     /**
      * Faz a captura de uma peça.
@@ -65,6 +71,12 @@ public  class Peca {
             casa = destino;
         }
     }
+    
+    
+    
+    
+    
+    
     
     /**
      * Valor    Tipo
@@ -101,6 +113,13 @@ public  class Peca {
         return tipoGeral;
     }
     
+    
+    
+
+    
+    /**
+     * @return true se for o primeiro movimento da peca
+     */
     public boolean getMovimento(){
         return primeiroMovimento;
     }    
