@@ -7,7 +7,7 @@
 public class Peao extends Peca
 {
     private int direcao;
-
+    
     /**
      * Construtor para objetos da classe Peao
      */
@@ -21,7 +21,6 @@ public class Peao extends Peca
         else if(tipo == PEAO_PRETO){
             direcao =-1;
         }
-        primeiroMovimento = true;
     }
     
     /**
@@ -36,20 +35,20 @@ public class Peao extends Peca
             //else if - verifica se o peão é preto e se o movimento é apenas para baixo
             if(tipo == PEAO_BRANCO && (casa.getX() == destino.getX() && (casa.getY()+2 == destino.getY() || casa.getY()+1 == destino.getY()))){
               super.mover(destino);   
-               primeiroMovimento = false;
+
             }
             else if(tipo == PEAO_PRETO && (casa.getX() == destino.getX() && (casa.getY()-2 == destino.getY() || casa.getY()-1 == destino.getY()))){
                super.mover(destino);   
-               primeiroMovimento = false;
+
             }
-            
         }
+        
         else if(!primeiroMovimento && !destino.possuiPeca()){
             if(casa.getX() == destino.getX() && (casa.getY()+direcao == destino.getY())){
                 super.mover(destino);  
             }
-            
         }
+        
     }
     
     /**
@@ -59,7 +58,7 @@ public class Peao extends Peca
     public void capturar(Casa destino){
         //movimento nas diagonais, mais a direção no Y para não capturar para trás
         if((casa.getX()+1 == destino.getX() || casa.getX()-1 == destino.getX()) && casa.getY()+direcao == destino.getY()){
-                super.capturar(destino);   
+                super.capturar(destino); 
         }
         
     }
