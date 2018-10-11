@@ -96,6 +96,7 @@ public class Jogo {
         Casa destino = tabuleiro.getCasa(destinoX, destinoY);
         Peca peca = origem.getPeca();
         peca.mover(destino);
+        
         if(destino.getPeca() != null){
             mudarJogador(origemX, origemY, destinoX, destinoY);
         }
@@ -123,6 +124,7 @@ public class Jogo {
         if(destino.getPeca() != null){
             mudarJogador(origemX, origemY, destinoX, destinoY);
         }
+        
         //invalido(origemX, origemY, destinoX,destinoY);
         mudarJogador(origemX, origemY, destinoX, destinoY);
     }
@@ -146,6 +148,7 @@ public class Jogo {
             movimentoPermitido = true;
             return movimentoPermitido;
         }
+        
         else if(peca.getTipoGeral() == 12 && jogador == 1 || peca.getTipoGeral() == 13 && jogador == 0){
             movimentoPermitido = false;
             return movimentoPermitido;
@@ -153,7 +156,7 @@ public class Jogo {
         return false;
     }
     
-    
+    // ****** Consertar este método **********
     private void mudarJogador(int origemX, int origemY, int destinoX, int destinoY){
         Casa origem = tabuleiro.getCasa(origemX, origemY);
         Casa destino = tabuleiro.getCasa(destinoX, destinoY);
