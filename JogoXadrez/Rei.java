@@ -13,7 +13,7 @@ public class Rei extends Peca
     public Rei(Casa casa, int tipo)
     {
         super(casa, tipo);
-        primeiroMovimento = false;
+
     }
     
     /**
@@ -27,15 +27,12 @@ public class Rei extends Peca
         if((casa.getX() == destino.getX() && (casa.getY()+1 == destino.getY() || casa.getY()-1 == destino.getY())) || (casa.getX()+1 == destino.getX() || 
             casa.getX()-1 == destino.getX() && casa.getY() == destino.getY())){
             super.mover(destino);
-            primeiroMovimento = true;
         }
         else if((casa.getX()+1 == destino.getX() && casa.getY()+1 == destino.getY()) || (casa.getX()-1 == destino.getX() && casa.getY()-1 == destino.getY())){
             super.mover(destino);
-            primeiroMovimento = true;
         }
         else if((casa.getX()+1 == destino.getX() && casa.getY()-1 == destino.getY()) || (casa.getX()-1 == destino.getX() && casa.getY()+1 == destino.getY())){
             super.mover(destino);
-            primeiroMovimento = true;
         }
         
     }
@@ -49,15 +46,12 @@ public class Rei extends Peca
         if((casa.getX() == destino.getX() && (casa.getY()+1 == destino.getY() || casa.getY()-1 == destino.getY())) || (casa.getX()+1 == destino.getX() || 
             casa.getX()-1 == destino.getX() && casa.getY() == destino.getY())){
             super.mover(destino);
-            primeiroMovimento = true;
         }
         else if((casa.getX()+1 == destino.getX() && casa.getY()+1 == destino.getY()) || (casa.getX()-1 == destino.getX() && casa.getY()-1 == destino.getY())){
             super.mover(destino);
-            primeiroMovimento = true;
         }
         else if((casa.getX()+1 == destino.getX() && casa.getY()-1 == destino.getY()) || (casa.getX()-1 == destino.getX() && casa.getY()+1 == destino.getY())){
             super.mover(destino);
-            primeiroMovimento = true;
         }
        
     }
