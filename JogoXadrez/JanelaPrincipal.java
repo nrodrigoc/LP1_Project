@@ -17,6 +17,7 @@ public class JanelaPrincipal extends JFrame {
     private boolean primeiroClique;
     private CasaGUI casaClicadaOrigem;
     private CasaGUI casaClicadaDestino;
+    private Casa origem1;
     
     private boolean primeiroMovimento;
     
@@ -45,7 +46,7 @@ public class JanelaPrincipal extends JFrame {
                 if(!casaClicadaDestino.possuiPeca()){
                     jogo.moverPeca(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
                                    casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
-                }else if(casaClicadaDestino.possuiPeca() && casaClicadaDestino.getCorPeca() != CasaGUI.SEM_PECA){
+                }else if(casaClicadaDestino.possuiPeca() && casaClicadaDestino.getCorPeca() == CasaGUI.SEM_PECA){
                     jogo.moverPeca(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
                                    casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
                 }
@@ -89,17 +90,19 @@ public class JanelaPrincipal extends JFrame {
      */
     public void acender(){
         Casa origemx = jogo.getTabuleiro().getCasa(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY());
+                   
+        //Casa destino2 = jogo.getTabuleiro().getCasa(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY()+2);
         
         //primeiroMovimento - verifica se eh o primeiro movimento da peca
         primeiroMovimento = origemx.getPeca().getMovimento();
         
-        if(origemx.getPeca().getTipo() == Peca.PEAO_BRANCO && primeiroMovimento){
+        if(origemx.getPeca().getTipo() == Peca.PEAO_BRANCO && primeiroMovimento /*&& !destino2.possuiPeca()*/){
             tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).destacar();
             tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+2).destacar();
             /*if(origemx.getPeca().podeComerEsquerdo()){
                 
             }*/
-        }else if(origemx.getPeca().getTipo() == Peca.PEAO_BRANCO && !primeiroMovimento){
+        }else if(origemx.getPeca().getTipo() == Peca.PEAO_BRANCO && !primeiroMovimento /*&& destino2.possuiPeca()*/){
             tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).destacar();            
         }
     }
@@ -110,12 +113,33 @@ public class JanelaPrincipal extends JFrame {
      */
     public void apagar(){
         Casa destinox = jogo.getTabuleiro().getCasa(casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
-        
-        if(destinox.getPeca().getTipo() == Peca.PEAO_BRANCO){
-            tabuleiroGUI.getCasaGUI(casaClicadaDestino.getPosicaoX(),casaClicadaDestino.getPosicaoY()).atenuar();
-            tabuleiroGUI.getCasaGUI(casaClicadaDestino.getPosicaoX(),casaClicadaDestino.getPosicaoY()-1).atenuar();
-            tabuleiroGUI.getCasaGUI(casaClicadaDestino.getPosicaoX(),casaClicadaDestino.getPosicaoY()+1).atenuar();
-            tabuleiroGUI.getCasaGUI(casaClicadaDestino.getPosicaoX(),casaClicadaDestino.getPosicaoY()+2).atenuar();
+        if(!jogo.getTabuleiro().getCasa(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY()).possuiPeca()
+          && destinox.getPeca().getTipo()  == Peca.PEAO_BRANCO){
+            
+                tabuleiroGUI.getCasaGUI(casaClicadaDestino.getPosicaoX(),casaClicadaDestino.getPosicaoY()).atenuar();
+                
+                if(jogo.noLimite(casaClicadaDestino.getPosicaoX(),casaClicadaDestino.getPosicaoY()+1)){                   
+                    tabuleiroGUI.getCasaGUI(casaClicadaDestino.getPosicaoX(),casaClicadaDestino.getPosicaoY()+1).atenuar();
+                    
+                }
+                
+                if(jogo.noLimite(casaClicadaDestino.getPosicaoX(),casaClicadaDestino.getPosicaoY()-1)){
+                    tabuleiroGUI.getCasaGUI(casaClicadaDestino.getPosicaoX(),casaClicadaDestino.getPosicaoY()-1).atenuar();
+                    
+                }
+                
+            
+        }else if(jogo.getTabuleiro().getCasa(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY()).possuiPeca()){
+              
+                tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()).atenuar();
+                if(jogo.noLimite(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1)){
+                    tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).atenuar();
+                    
+                }
+                if(jogo.noLimite(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+2)){
+                    tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+2).atenuar();
+                       
+                }
         }
     }
     
