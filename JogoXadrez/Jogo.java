@@ -184,6 +184,19 @@ public class Jogo {
     
     
     /**
+     * @return true se as casas estao no limite do tabuleiro
+     */
+    public boolean noLimite(int x, int y){
+        if(x >= 0 && x <= 7 && y >= 0 && y <= 7){
+            return true;
+        }
+        return false;
+    }
+    
+    
+    
+    
+    /**
      * @return o Tabuleiro em jogo.
      */
     public static Tabuleiro getTabuleiro() {
