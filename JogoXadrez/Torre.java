@@ -13,7 +13,6 @@ public class Torre extends Peca
     public Torre(Casa casa, int tipo)
     {
         super(casa, tipo);
-        primeiroMovimento = false;
     }
 
     public void mover(Casa destino){
@@ -66,7 +65,6 @@ public class Torre extends Peca
         //Movimenta a peca, caso seja permitido
         if(podeIr){
             super.mover(destino);
-            primeiroMovimento = true;
         }
         
     }
@@ -76,9 +74,8 @@ public class Torre extends Peca
         boolean podeCapturar = false;
         
         
-        
-        
-        //NOVO ALGORITmO
+               
+        //NOVO ALGORITMO
         
         //movimentacao para cima
         if(casa.getX() == destino.getX() && destino.getY() > casa.getY()){
@@ -123,7 +120,6 @@ public class Torre extends Peca
         //Captura a peca, caso seja permitido
         if(podeCapturar){
             super.capturar(destino);
-            primeiroMovimento = true;
             
         }
         
