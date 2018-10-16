@@ -99,33 +99,34 @@ public class Jogo {
             mudarJogador(origemX, origemY, destinoX, destinoY);
         }
         
-        if(destino.getPeca().getTipo() == Peca.TORRE_BRANCO){
-            origem = destino;
-            if(podeRoque(origem)){
+        if(destino.getPeca().getTipo() == Peca.TORRE_BRANCO 
+        || destino.getPeca().getTipo() == Peca.TORRE_PRETO){
+            if(podeRoque(destino)){
                 int x = 0;
                 int y = 0;
-                if(origem.getPeca().getTipo() == Peca.TORRE_BRANCO ){
-                    x = origem.getX();
-                    y = origem.getY();
-                    if(noLimite(x+1, y)){
-                        Casa casa1 = tabuleiro.getCasa(x+1,y);
-                        if(casa1.possuiPeca() && casa1.getPeca().getTipo() == Peca.REI_BRANCO
-                        && casa1.getPeca().getMovimento() == true){
-                            roque(casa1, origem);
-                        }
+                
+                x = destino.getX();
+                y = destino.getY();
+                if(noLimite(x+1, y) && destino.getX() > origem.getX()){
+                    Casa casa1 = tabuleiro.getCasa(x+1,y);
                     
+                    if(casa1.possuiPeca() && 
+                    (casa1.getPeca().getTipo() == Peca.REI_BRANCO || casa1.getPeca().getTipo() == Peca.REI_PRETO) && 
+                    casa1.getPeca().getMovimento() == true){
+                        roque(casa1, destino);
                     }
-                    
-                    if(noLimite(x-1, y)){
-                        Casa casa2 = tabuleiro.getCasa(x-1,y);
-            
-                        if(casa2.possuiPeca() && casa2.getPeca().getTipo() == Peca.REI_BRANCO
-                        && casa2.getPeca().getMovimento() == true){
-                            roque(casa2, origem);
-                        }
-                    
+                                      
+                }else if(noLimite(x-1, y) && destino.getX() < origem.getX()){
+                    Casa casa2 = tabuleiro.getCasa(x-1,y);
+        
+                    if(casa2.possuiPeca() &&
+                    (casa2.getPeca().getTipo() == Peca.REI_BRANCO || casa2.getPeca().getTipo() == Peca.REI_PRETO) &&
+                    casa2.getPeca().getMovimento() == true){
+                        roque(casa2, destino);
                     }
+                
                 }
+                
                 
             }
             
@@ -215,7 +216,11 @@ public class Jogo {
         }
         return false;
     }
-   
+    
+    
+    /**
+     * Realiza o movimento roque
+     */
     public void roque(Casa crei, Casa ctorre){
         
         Peca rei = crei.getPeca();
@@ -233,27 +238,31 @@ public class Jogo {
     }
     
     
+    /**
+     * @return se o movimento roque pode ser feito
+     * 
+     */
     
     public boolean podeRoque(Casa casa1){
         int x = 0;
         int y = 0;
-        if(casa1.getPeca().getTipo() == Peca.TORRE_BRANCO /*&& casa1.getPeca().getMovimento() == true*/){
+        if(casa1.getPeca().getTipo() == Peca.TORRE_BRANCO || 
+        casa1.getPeca().getTipo() == Peca.TORRE_PRETO/*&& casa1.getPeca().getMovimento() == true*/){
             x = casa1.getX();
             y = casa1.getY();
-            if(noLimite(x+1, y)){
             Casa casa2 = tabuleiro.getCasa(x+1,y);
-                if(casa2.possuiPeca() && casa2.getPeca().getTipo() == Peca.REI_BRANCO){
-                    return true;
-                }
-            
-            }else if(noLimite(x-1, y)){
-                Casa casa3 = tabuleiro.getCasa(x-1,y);
-    
-                if(casa3.possuiPeca() && casa3.getPeca().getTipo() == Peca.REI_BRANCO){
-                    return true;
-                }
-            
+            if(casa2.possuiPeca() && (casa2.getPeca().getTipo() == Peca.REI_BRANCO ||
+            casa2.getPeca().getTipo() == Peca.REI_PRETO)){
+                return true;
             }
+        
+            Casa casa3 = tabuleiro.getCasa(x-1,y);
+            if(casa3.possuiPeca() && (casa3.getPeca().getTipo() == Peca.REI_BRANCO ||
+            casa3.getPeca().getTipo() == Peca.REI_PRETO)){
+                return true;
+            }
+            
+            
         }
             
         return false;
