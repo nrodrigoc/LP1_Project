@@ -34,15 +34,14 @@ public class JanelaPrincipal extends JFrame {
                     acender();
                     casaClicadaOrigem.destacar();
                     primeiroClique = false;
-                    //turno();                
+                    turno();                
                     
                 }else {
                     // clicou em uma posi�?o inv�lida, ent?o n?o faz nada.
                     JOptionPane.showMessageDialog(this, "Clique em uma peça.");
                 }
-            }else {
+        }else {
                 casaClicadaDestino = casaClicada;
-                //turno();
                 if(!casaClicadaDestino.possuiPeca()){
                     jogo.moverPeca(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
                                    casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
@@ -53,6 +52,9 @@ public class JanelaPrincipal extends JFrame {
                 else{
                     jogo.capturarPeca(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
                                    casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
+                    if(casaClicadaOrigem.getPosicaoX() == casaClicadaDestino.getPosicaoX() && casaClicadaOrigem.getPosicaoY() == casaClicadaDestino.getPosicaoY()){
+                        JOptionPane.showMessageDialog(this, "Realize sua jogada novamente");
+                    }
                 }
                 
                 
@@ -68,9 +70,7 @@ public class JanelaPrincipal extends JFrame {
      * Impede uma jogada quando é a vez da outra peça.
      */
     private void turno(){
-
-        boolean permitido = jogo.jogador(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
-                               casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
+        boolean permitido = jogo.jogador(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY());
         if(permitido){
             primeiroClique = false;
         }
@@ -81,9 +81,6 @@ public class JanelaPrincipal extends JFrame {
         }
     }
         
-    
-    
-    
     /**
      * Destaca as casas onde a peca pode ir
      * 
@@ -128,6 +125,13 @@ public class JanelaPrincipal extends JFrame {
                     
                 }
                 
+                /*if(jogo.getJogador() == 1 && casaClicadaOrigem.getCorPeca() == 0){
+                /* tabuleiroGUI.getCasaGUI(casaClicadaDestino.getPosicaoX(),casaClicadaDestino.getPosicaoY()).atenuar();
+                }
+                else if(jogo.getJogador() == 0 && casaClicadaOrigem.getCorPeca() == 1){
+                    tabuleiroGUI.getCasaGUI(casaClicadaDestino.getPosicaoX(),casaClicadaDestino.getPosicaoY()).atenuar()
+                }*/
+                 
             
         }else if(jogo.getTabuleiro().getCasa(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY()).possuiPeca()){
               
@@ -136,6 +140,7 @@ public class JanelaPrincipal extends JFrame {
                     tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).atenuar();
                     
                 }
+                
                 if(jogo.noLimite(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+2)){
                     tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+2).atenuar();
                        
