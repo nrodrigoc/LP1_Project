@@ -13,7 +13,6 @@ public class Rainha extends Peca
     public Rainha(Casa casa, int tipo)
     {
         super(casa, tipo);
-        primeiroMovimento = false;
     }
 
     public void mover(Casa destino){
@@ -90,7 +89,6 @@ public class Rainha extends Peca
         //Captura a peca, caso seja permitido
         if(podeCapturar){
             super.capturar(destino);
-            primeiroMovimento = true;
         }        
     }
     
@@ -145,7 +143,6 @@ public class Rainha extends Peca
         //Movimenta a peca, caso seja permitido
         if(podeIr){
             super.mover(destino);
-            primeiroMovimento = true;
         }
     }     
     
@@ -202,7 +199,6 @@ public class Rainha extends Peca
         
         if(podeIr){
             super.mover(destino);
-            primeiroMovimento = true;
         }        
     }    
     
@@ -261,7 +257,6 @@ public class Rainha extends Peca
         
         if(podeIr){
             super.capturar(destino);
-            primeiroMovimento = true;
         }        
            
     }

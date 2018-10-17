@@ -51,8 +51,11 @@ public  class Peca {
         if(!destino.possuiPeca()){
             casa.removerPeca();
             destino.colocarPeca(this);
+            //Se a origem nao tiver mais peca, ela se moveu
+            if(!casa.possuiPeca()){
+               primeiroMovimento = false;
+            }
             casa = destino;
-
         }
 
     }    
@@ -68,6 +71,9 @@ public  class Peca {
             casa.removerPeca();
             destino.removerPeca();
             destino.colocarPeca(this);
+            if(!casa.possuiPeca()){
+               primeiroMovimento = false;
+            }            
             casa = destino;
         }
     }
