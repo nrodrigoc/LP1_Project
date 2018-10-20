@@ -1,3 +1,11 @@
+
+
+import javax.swing.JOptionPane;
+
+
+
+
+
 /**
  * Armazena o tabuleiro e responsavel por posicionar as pecas.
  * 
@@ -94,43 +102,30 @@ public class Jogo {
         Casa destino = tabuleiro.getCasa(destinoX, destinoY);
         Peca peca = origem.getPeca();
         peca.mover(destino);
-        
         if(destino.getPeca() != null){
             mudarJogador(origemX, origemY, destinoX, destinoY);
-        }
-        
-        if(destino.getPeca().getTipo() == Peca.TORRE_BRANCO 
-        || destino.getPeca().getTipo() == Peca.TORRE_PRETO){
-            if(podeRoque(destino)){
-                int x = 0;
-                int y = 0;
-                
-                x = destino.getX();
-                y = destino.getY();
-                if(noLimite(x+1, y) && destino.getX() > origem.getX()){
-                    Casa casa1 = tabuleiro.getCasa(x+1,y);
-                    
-                    if(casa1.possuiPeca() && 
-                    (casa1.getPeca().getTipo() == Peca.REI_BRANCO || casa1.getPeca().getTipo() == Peca.REI_PRETO) && 
-                    casa1.getPeca().getMovimento() == true){
-                        roque(casa1, destino);
-                    }
-                                      
-                }else if(noLimite(x-1, y) && destino.getX() < origem.getX()){
-                    Casa casa2 = tabuleiro.getCasa(x-1,y);
-        
-                    if(casa2.possuiPeca() &&
-                    (casa2.getPeca().getTipo() == Peca.REI_BRANCO || casa2.getPeca().getTipo() == Peca.REI_PRETO) &&
-                    casa2.getPeca().getMovimento() == true){
-                        roque(casa2, destino);
-                    }
-                
-                }
-                
-                
+            if(destino.getPeca().getTipo() == Peca.TORRE_BRANCO || destino.getPeca().getTipo() == Peca.TORRE_PRETO){
+                if(podeRoque(destino)){
+                    int x = destino.getX();
+                    int y = destino.getY();
+                    if(noLimite(x+1, y) && destino.getX() > origem.getX()){
+                        Casa casa1 = tabuleiro.getCasa(x+1,y);
+                        if(casa1.possuiPeca() && (casa1.getPeca().getTipo() == Peca.REI_BRANCO || casa1.getPeca().getTipo() == Peca.REI_PRETO) && 
+                            casa1.getPeca().getMovimento() == true){
+                                roque(casa1, destino);
+                        }
+                   }
+                   else if(noLimite(x-1, y) && destino.getX() < origem.getX()){
+                       Casa casa2 = tabuleiro.getCasa(x-1,y);
+                       if(casa2.possuiPeca() && (casa2.getPeca().getTipo() == Peca.REI_BRANCO || casa2.getPeca().getTipo() == Peca.REI_PRETO) &&
+                            casa2.getPeca().getMovimento() == true){
+                                roque(casa2, destino);
+                       }
+                   }
+                } 
             }
-            
         }
+        
     }
     
     /**
@@ -147,7 +142,7 @@ public class Jogo {
         Casa destino = tabuleiro.getCasa(destinoX, destinoY);
         Peca peca = origem.getPeca();
         peca.capturar(destino);
-        if(destino.getPeca() != null){
+        if(destino.getPeca() != null && peca.getTipoGeral() != destino.getPeca().getTipoGeral()){
             mudarJogador(origemX, origemY, destinoX, destinoY);
         }
         continuarJogador(origemX, origemY, destinoX, destinoY);
@@ -216,8 +211,7 @@ public class Jogo {
         }
         return false;
     }
-    
-    
+   
     /**
      * Realiza o movimento roque
      */
@@ -236,7 +230,6 @@ public class Jogo {
         crei.colocarPeca(rei);
         rei.primeiroMovimento = false;
     }
-    
     
     /**
      * @return se o movimento roque pode ser feito
@@ -268,10 +261,66 @@ public class Jogo {
         return false;
     }
     
-    
-    
-    
-    
+    public void promocao(int origemX, int origemY, int destinoX, int destinoY){
+        Casa origem = tabuleiro.getCasa(origemX, origemY);
+        Casa destino = tabuleiro.getCasa(destinoX, destinoY);
+        Peca peca = destino.getPeca();
+        Object[] pecas = {"Torre", "Bispo", "Cavalo", "Rei", "Rainha"};
+        if(peca != null && peca.getTipo() == 1 && destino.getY() == 7){
+            Object selecionarPecasB = JOptionPane.showOptionDialog(null, "Escolha uma peca", "selectionValues",JOptionPane.DEFAULT_OPTION, 
+                                            JOptionPane.INFORMATION_MESSAGE, null,pecas, pecas[0]);
+            if(selecionarPecasB.equals(4)){
+                destino.removerPeca();
+                Peca rainha = new Rainha(destino, Peca.RAINHA_BRANCO);
+            }
+            else if(selecionarPecasB.equals(3)){
+                destino.removerPeca();
+                Peca rei = new Rei(destino, Peca.REI_BRANCO);
+            }
+            else if(selecionarPecasB.equals(2)){
+                destino.removerPeca();
+                Peca cavalo = new Cavalo(destino, Peca.CAVALO_BRANCO);
+            }
+            else if(selecionarPecasB.equals(1)){
+                destino.removerPeca();
+                Peca bispo = new Bispo(destino, Peca.BISPO_BRANCO);
+            }
+            else if(selecionarPecasB.equals(0)){
+                destino.removerPeca();
+                Peca torre = new Torre(destino, Peca.TORRE_BRANCO); 
+            }
+            else if(selecionarPecasB == null){
+                JOptionPane.showMessageDialog(null, "Você irá continuar com o peão");
+            }
+        }
+        else if(peca != null && peca.getTipo() == 7 && destino.getY() == 0){
+            Object selecionarPecasP = JOptionPane.showOptionDialog(null, "Escolha uma peca", "selectionValues",JOptionPane.DEFAULT_OPTION, 
+                                            JOptionPane.INFORMATION_MESSAGE, null,pecas, pecas[0]);
+            if(selecionarPecasP.equals(4)){
+                destino.removerPeca();
+                Peca rainha = new Rainha(destino, Peca.RAINHA_PRETO);
+            }
+            else if(selecionarPecasP.equals(3)){
+                destino.removerPeca();
+                Peca rei = new Rei(destino, Peca.REI_PRETO);
+            }
+            else if(selecionarPecasP.equals(2)){
+                destino.removerPeca();
+                Peca cavalo = new Cavalo(destino, Peca.CAVALO_PRETO);
+            }
+            else if(selecionarPecasP.equals(1)){
+                destino.removerPeca();
+                Peca bispo = new Bispo(destino, Peca.BISPO_PRETO);
+            }
+            else if(selecionarPecasP.equals(0)){
+                destino.removerPeca();
+                Peca torre = new Torre(destino, Peca.TORRE_PRETO); 
+            }
+            else if(selecionarPecasP == null){
+                JOptionPane.showMessageDialog(null, "Você irá continuar com o peão");
+            }
+        }
+    }
     
     /**
      * @return o Tabuleiro em jogo.

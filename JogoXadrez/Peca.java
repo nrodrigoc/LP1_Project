@@ -40,7 +40,6 @@ public  class Peca {
         this.tipo = tipo;
         casa.colocarPeca(this);
         this.jogador = 0;
-        //pecas = new ArrayList<Peca>();
     }
     
     /**

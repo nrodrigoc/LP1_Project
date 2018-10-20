@@ -49,13 +49,13 @@ public class JanelaPrincipal extends JFrame {
                     jogo.moverPeca(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
                                    casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
                 }
-                /*else{
+                else{
                     jogo.capturarPeca(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
                                    casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
                     if(casaClicadaOrigem.getPosicaoX() == casaClicadaDestino.getPosicaoX() && casaClicadaOrigem.getPosicaoY() == casaClicadaDestino.getPosicaoY()){
                         JOptionPane.showMessageDialog(this, "Realize sua jogada novamente");
                     }
-                }*/
+                }
                 
                 
                 apagar();      

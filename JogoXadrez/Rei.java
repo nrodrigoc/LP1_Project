@@ -45,13 +45,13 @@ public class Rei extends Peca
     public void capturar(Casa destino){
         if((casa.getX() == destino.getX() && (casa.getY()+1 == destino.getY() || casa.getY()-1 == destino.getY())) || (casa.getX()+1 == destino.getX() || 
             casa.getX()-1 == destino.getX() && casa.getY() == destino.getY())){
-            super.mover(destino);
+            super.capturar(destino);
         }
         else if((casa.getX()+1 == destino.getX() && casa.getY()+1 == destino.getY()) || (casa.getX()-1 == destino.getX() && casa.getY()-1 == destino.getY())){
-            super.mover(destino);
+            super.capturar(destino);
         }
         else if((casa.getX()+1 == destino.getX() && casa.getY()-1 == destino.getY()) || (casa.getX()-1 == destino.getX() && casa.getY()+1 == destino.getY())){
-            super.mover(destino);
+            super.capturar(destino);
         }
        
     }

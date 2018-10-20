@@ -41,9 +41,7 @@ public class Peao extends Peca
                super.mover(destino);   
 
             }
-        }
-        
-        else if(!primeiroMovimento && !destino.possuiPeca()){
+        }else if(!primeiroMovimento && !destino.possuiPeca()){
             if(casa.getX() == destino.getX() && (casa.getY()+direcao == destino.getY())){
                 super.mover(destino);  
             }
