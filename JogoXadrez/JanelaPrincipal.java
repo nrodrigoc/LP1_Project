@@ -37,11 +37,12 @@ public class JanelaPrincipal extends JFrame {
                     //turno();                
                     
                 }else {
-                    // clicou em uma posi�?o inv�lida, ent?o n?o faz nada.
+                    // clicou em uma posicao invalida, entao nao faz nada.
                     JOptionPane.showMessageDialog(this, "Clique em uma peça.");
                 }
         }else {
                 casaClicadaDestino = casaClicada;
+                
                 if(!casaClicadaDestino.possuiPeca()){
                     jogo.moverPeca(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
                                    casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
@@ -52,7 +53,8 @@ public class JanelaPrincipal extends JFrame {
                 else{
                     jogo.capturarPeca(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
                                    casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
-                    if(casaClicadaOrigem.getPosicaoX() == casaClicadaDestino.getPosicaoX() && casaClicadaOrigem.getPosicaoY() == casaClicadaDestino.getPosicaoY()){
+                    if(casaClicadaOrigem.getPosicaoX() == casaClicadaDestino.getPosicaoX() 
+                    && casaClicadaOrigem.getPosicaoY() == casaClicadaDestino.getPosicaoY()){
                         JOptionPane.showMessageDialog(this, "Realize sua jogada novamente");
                     }
                 }
@@ -88,7 +90,6 @@ public class JanelaPrincipal extends JFrame {
     public void acender(){
         Casa origemx = jogo.getTabuleiro().getCasa(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY());
                    
-        //Casa destino2 = jogo.getTabuleiro().getCasa(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY()+2);
         
         //primeiroMovimento - verifica se eh o primeiro movimento da peca
         primeiroMovimento = origemx.getPeca().getMovimento();
@@ -96,9 +97,7 @@ public class JanelaPrincipal extends JFrame {
         if(origemx.getPeca().getTipo() == Peca.PEAO_BRANCO && primeiroMovimento /*&& !destino2.possuiPeca()*/){
             tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).destacar();
             tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+2).destacar();
-            /*if(origemx.getPeca().podeComerEsquerdo()){
-                
-            }*/
+
         }else if(origemx.getPeca().getTipo() == Peca.PEAO_BRANCO && !primeiroMovimento /*&& destino2.possuiPeca()*/){
             tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).destacar();            
         }

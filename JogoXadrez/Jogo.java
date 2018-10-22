@@ -1,5 +1,4 @@
-
-
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 
@@ -17,7 +16,11 @@ public class Jogo {
     private static Tabuleiro tabuleiro;
     private int jogador;
     private boolean movimentoPermitido;
+    public static ArrayList<Peca> peoes; 
+    
+    
     public Jogo() {
+        peoes = new ArrayList<>();
         tabuleiro = new Tabuleiro();
         criarPecas();
         jogador = 0;
@@ -38,6 +41,7 @@ public class Jogo {
                 else if(j == 1){
                     Casa casa = tabuleiro.getCasa(i,j);
                     Peao peca = new Peao(casa, Peca.PEAO_BRANCO);
+                    peoes.add(peca);
                 }
                 else if(j == 0 && (i == 1 || i == 6)){
                     Casa casa = tabuleiro.getCasa(i,j);
@@ -67,6 +71,7 @@ public class Jogo {
                 else if(j == 6){
                     Casa casa = tabuleiro.getCasa(i,j);
                     Peca peca = new Peao(casa, Peca.PEAO_PRETO);
+                    peoes.add(peca);
                 }
                 else if(j == 7 && (i == 1 || i == 6)){
                     Casa casa = tabuleiro.getCasa(i,j);
@@ -99,9 +104,10 @@ public class Jogo {
      */
     public void moverPeca(int origemX, int origemY, int destinoX, int destinoY) {
         Casa origem = tabuleiro.getCasa(origemX, origemY);
-        Casa destino = tabuleiro.getCasa(destinoX, destinoY);
+        Casa destino = tabuleiro.getCasa(destinoX, destinoY);        
         Peca peca = origem.getPeca();
         peca.mover(destino);
+        
         if(destino.getPeca() != null){
             mudarJogador(origemX, origemY, destinoX, destinoY);
             if(destino.getPeca().getTipo() == Peca.TORRE_BRANCO || destino.getPeca().getTipo() == Peca.TORRE_PRETO){
@@ -124,8 +130,8 @@ public class Jogo {
                    }
                 } 
             }
-        }
         
+        }
     }
     
     /**
@@ -142,11 +148,29 @@ public class Jogo {
         Casa destino = tabuleiro.getCasa(destinoX, destinoY);
         Peca peca = origem.getPeca();
         peca.capturar(destino);
+        
+                
         if(destino.getPeca() != null && peca.getTipoGeral() != destino.getPeca().getTipoGeral()){
             mudarJogador(origemX, origemY, destinoX, destinoY);
         }
+              
         continuarJogador(origemX, origemY, destinoX, destinoY);
     }
+    
+    
+    /*public static void peoes(){
+        int i = 1;
+        for(Peca peao: peoes){
+            System.out.println("peao - " + i);
+            i++;
+        }
+    }*/
+    
+    
+    
+    /**
+     * @return true se a casa selecionada possui peca
+     */
     
     public static boolean possuiP(int x, int y){
         Casa c1 = tabuleiro.getCasa(x,y);
@@ -157,6 +181,7 @@ public class Jogo {
         }
         return false;
     }
+    
     
     public int getJogador(){
         return jogador;
@@ -231,6 +256,13 @@ public class Jogo {
         rei.primeiroMovimento = false;
     }
     
+    
+    public static void removePassant(){
+        for(Peca peao: peoes){
+            peao.setPassant(false);
+        }
+    }
+    
     /**
      * @return se o movimento roque pode ser feito
      * 
@@ -240,7 +272,7 @@ public class Jogo {
         int x = 0;
         int y = 0;
         if(casa1.getPeca().getTipo() == Peca.TORRE_BRANCO || 
-        casa1.getPeca().getTipo() == Peca.TORRE_PRETO/*&& casa1.getPeca().getMovimento() == true*/){
+        casa1.getPeca().getTipo() == Peca.TORRE_PRETO){
             x = casa1.getX();
             y = casa1.getY();
             Casa casa2 = tabuleiro.getCasa(x+1,y);
@@ -321,6 +353,8 @@ public class Jogo {
             }
         }
     }
+        
+        
     
     /**
      * @return o Tabuleiro em jogo.

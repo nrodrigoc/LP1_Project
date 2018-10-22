@@ -25,22 +25,28 @@ public  class Peca {
     public static final int PECAS_BRANCAS = 12;
     public static final int PECAS_PRETAS = 13;
     
+    protected Casa origem;
     protected Casa casa;
     protected int tipo;
     private int tipoGeral;
     protected int jogador;
     public boolean movimentoPermitido;
     
+    //enPassant - guarda "true" caso o Peao esteja em "en Passant"
+    protected boolean enPassant;    
     //primeiroMovimento - guarda "true" a peca ainda nao se movimentou na partida
     public boolean primeiroMovimento;
     
     public Peca(Casa casa, int tipo) {
         primeiroMovimento = true;
+        this.origem = casa;
         this.casa = casa;
         this.tipo = tipo;
         casa.colocarPeca(this);
         this.jogador = 0;
+        enPassant = false;
     }
+    
     
     /**
      * Movimenta a peca para uma nova casa.
@@ -48,6 +54,7 @@ public  class Peca {
      */
     public void mover(Casa destino) {
         if(!destino.possuiPeca()){
+            Jogo.removePassant();
             casa.removerPeca();
             destino.colocarPeca(this);
             //Se a origem nao tiver mais peca, ela se moveu
@@ -67,6 +74,9 @@ public  class Peca {
      */
     public void capturar(Casa destino) {
         if(destino.possuiPeca() && (getTipoGeral() != destino.getPeca().getTipoGeral())){
+            if(destino.getPeca().getTipo() == Peca.PEAO_BRANCO || destino.getPeca().getTipo() == Peca.PEAO_PRETO){
+                Jogo.peoes.remove(destino.getPeca());
+            }
             casa.removerPeca();
             destino.removerPeca();
             destino.colocarPeca(this);
@@ -76,11 +86,6 @@ public  class Peca {
             casa = destino;
         }
     }
-    
-    
-    
-    
-    
     
     
     /**
@@ -119,8 +124,28 @@ public  class Peca {
     }
     
     
+    /**
+     * @return true se a peca movida possibilita o en passant
+     */
+    public boolean podePassant(Casa origem, Casa destino){
+        if(this.getTipo() == PEAO_BRANCO && origem.getY()+2 == destino.getY()){
+            return true;
+        }else if(this.getTipo() == PEAO_PRETO && origem.getY()-2 == destino.getY()){
+            return true;
+        }
+        return false;
+    }
     
-
+    /**
+     * @return se o peao da casa selecionada está en passant
+     */
+    public boolean getPassant(Casa casa){       
+       return casa.getPeca().enPassant;
+    }
+    
+    public void setPassant(boolean b){
+        this.enPassant = b;
+    }
     
     /**
      * @return true se for o primeiro movimento da peca
