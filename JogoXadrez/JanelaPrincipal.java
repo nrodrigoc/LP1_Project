@@ -34,7 +34,7 @@ public class JanelaPrincipal extends JFrame {
                     acender();
                     casaClicadaOrigem.destacar();
                     primeiroClique = false;
-                    //turno();                
+                    turno();                
                     
                 }else {
                     // clicou em uma posicao invalida, entao nao faz nada.
@@ -77,6 +77,7 @@ public class JanelaPrincipal extends JFrame {
             primeiroClique = false;
         }
         else{
+            apagar();
             JOptionPane.showMessageDialog(this, "Movimento pertence ao outro time");
             primeiroClique = true;
             casaClicadaOrigem.atenuar();
@@ -96,10 +97,13 @@ public class JanelaPrincipal extends JFrame {
         
         if(origemx.getPeca().getTipo() == Peca.PEAO_BRANCO && primeiroMovimento /*&& !destino2.possuiPeca()*/){
             tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).destacar();
+            
             tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+2).destacar();
 
         }else if(origemx.getPeca().getTipo() == Peca.PEAO_BRANCO && !primeiroMovimento /*&& destino2.possuiPeca()*/){
-            tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).destacar();            
+            if(jogo.noLimite(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1)){
+                tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).destacar();     
+            }
         }
     }
     
