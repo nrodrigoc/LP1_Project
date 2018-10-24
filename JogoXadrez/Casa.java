@@ -32,6 +32,7 @@ public class Casa {
         return x;
     }
     
+    
     /**
      * @return y a coluna do tabuleiro que a casa esta. 
      */

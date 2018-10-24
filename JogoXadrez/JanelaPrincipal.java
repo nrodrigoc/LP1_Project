@@ -18,8 +18,8 @@ public class JanelaPrincipal extends JFrame {
     private CasaGUI casaClicadaOrigem;
     private CasaGUI casaClicadaDestino;
     private Casa origem1;
-    
     private boolean primeiroMovimento;
+    private boolean reiPerigo;
     
     
     /**
@@ -28,24 +28,32 @@ public class JanelaPrincipal extends JFrame {
      * @param casaClicada Casa que o jogador clicou.
      */
     public void reagir(CasaGUI casaClicada) {
-        if (primeiroClique) {
+        if (primeiroClique){
                 if (casaClicada.possuiPeca()) {
+                    
+                   
                     casaClicadaOrigem = casaClicada;
-                    acender();
+                    
+                    if(reiPerigo && (casaClicadaOrigem.getCorPeao() == 2 || casaClicadaOrigem.getCorPeao() == 3)){
+                        primeiroClique = true;
+                        JOptionPane.showMessageDialog(this, "Salve seu rei");
+                        return;
+                    }
+                    //acender();
                     casaClicadaOrigem.destacar();
                     primeiroClique = false;
-                    //turno();                
+                    turno();                
                     
                 }else {
-                    // clicou em uma posicao invalida, entao nao faz nada.
+                    // clicou em uma posi�?o inv�lida, ent?o n?o faz nada.
                     JOptionPane.showMessageDialog(this, "Clique em uma peça.");
                 }
         }else {
                 casaClicadaDestino = casaClicada;
-                
                 if(!casaClicadaDestino.possuiPeca()){
                     jogo.moverPeca(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
                                    casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
+                                   promocaoPeao();
                 }else if(casaClicadaDestino.possuiPeca() && casaClicadaDestino.getCorPeca() == CasaGUI.SEM_PECA){
                     jogo.moverPeca(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
                                    casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
@@ -53,19 +61,20 @@ public class JanelaPrincipal extends JFrame {
                 else{
                     jogo.capturarPeca(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
                                    casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
-                    if(casaClicadaOrigem.getPosicaoX() == casaClicadaDestino.getPosicaoX() 
-                    && casaClicadaOrigem.getPosicaoY() == casaClicadaDestino.getPosicaoY()){
+                    if(casaClicadaOrigem.getPosicaoX() == casaClicadaDestino.getPosicaoX() && casaClicadaOrigem.getPosicaoY() == casaClicadaDestino.getPosicaoY()){
                         JOptionPane.showMessageDialog(this, "Realize sua jogada novamente");
                     }
                 }
                 
                 
-                apagar();      
+                //apagar();      
                 casaClicadaOrigem.atenuar();
                 primeiroClique = true;
                 atualizar();
+                reiPerigo = jogo.check(casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
         }
     }
+    
     
     /**
      * Se permitido for verdadeiro realiza a jogada.
@@ -82,6 +91,13 @@ public class JanelaPrincipal extends JFrame {
             casaClicadaOrigem.atenuar();
         }
     }
+    
+    private void promocaoPeao(){
+        if(casaClicadaOrigem.getCorPeao() == 2 || casaClicadaOrigem.getCorPeao() == 3){
+            jogo.promocao(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
+                                   casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
+        }
+    }
         
     /**
      * Destaca as casas onde a peca pode ir
@@ -90,6 +106,7 @@ public class JanelaPrincipal extends JFrame {
     public void acender(){
         Casa origemx = jogo.getTabuleiro().getCasa(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY());
                    
+        //Casa destino2 = jogo.getTabuleiro().getCasa(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY()+2);
         
         //primeiroMovimento - verifica se eh o primeiro movimento da peca
         primeiroMovimento = origemx.getPeca().getMovimento();
@@ -97,7 +114,9 @@ public class JanelaPrincipal extends JFrame {
         if(origemx.getPeca().getTipo() == Peca.PEAO_BRANCO && primeiroMovimento /*&& !destino2.possuiPeca()*/){
             tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).destacar();
             tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+2).destacar();
-
+            /*if(origemx.getPeca().podeComerEsquerdo()){
+                
+            }*/
         }else if(origemx.getPeca().getTipo() == Peca.PEAO_BRANCO && !primeiroMovimento /*&& destino2.possuiPeca()*/){
             tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).destacar();            
         }
@@ -158,6 +177,7 @@ public class JanelaPrincipal extends JFrame {
         this.casaClicadaOrigem = null;
         this.casaClicadaDestino = null;
         criarNovoJogo();
+        
 
         // configura action listener para o menu novo
         menuNovo.addActionListener(new ActionListener() {

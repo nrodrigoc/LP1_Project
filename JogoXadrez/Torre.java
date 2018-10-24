@@ -1,3 +1,5 @@
+
+import java.util.ArrayList;
 /**
  * Escreva a descrição da classe Torre aqui.
  * 
@@ -6,7 +8,8 @@
  */
 public class Torre extends Peca
 {
-
+    
+    //public Casa pos[][];
     /**
      * Construtor para objetos da classe Torre
      */
@@ -59,9 +62,6 @@ public class Torre extends Peca
             }
         }
         
-        
-      
-        
         //Movimenta a peca, caso seja permitido
         if(podeIr){
             super.mover(destino);
@@ -72,10 +72,6 @@ public class Torre extends Peca
     public void capturar(Casa destino){
         //podeCapturar - avalia se pode pode capturar a peca alvo
         boolean podeCapturar = false;
-        
-        
-               
-        //NOVO ALGORITMO
         
         //movimentacao para cima
         if(casa.getX() == destino.getX() && destino.getY() > casa.getY()){
@@ -113,39 +109,93 @@ public class Torre extends Peca
                 }
             }
         }
-        
-        
-      
-        
+   
         //Captura a peca, caso seja permitido
         if(podeCapturar){
             super.capturar(destino);
             
         }
-        
-        
-        
-        
-        
-        
-        
-        
-        /*ALGORITMO ANTERIOR
-        for(int count = 0; count < 8; count++) {
-            if(casa.getX() == destino.getX() && 
-            (casa.getY()+count == destino.getY() || casa.getY()-count == destino.getY())){
-                super.capturar(destino);
-                primeiroMovimento = true;
-                
-            }else if(casa.getY() == destino.getY() && 
-            (casa.getX()+ count == destino.getX() || casa.getX()-count == destino.getX())){
-                super.capturar(destino);
-                primeiroMovimento = true;
-            }
-        }*/        
 
     }
     
+    public ArrayList<Casa> possibilidades(Casa casa, Casa verifica){
+        movimentosPossiveis.clear();
+        int x = casa.getX();
+        int y = casa.getY();
+        int posx = x-1;
+        
+        //Casa verifica = tab.getCasa(x,y);
+        while(posx >= 0){
+            verifica = Jogo.tabuleiro.getCasa(posx,y);
+            //verifica.setX(posx);
+            if(verifica.getPeca() == null){
+                movimentosPossiveis.add(verifica);
+            }
+            else if(verifica.getPeca().getTipoGeral() == getTipoGeral()){
+                break;
+            }
+            else{
+                movimentosPossiveis.add(verifica);
+                break;
+            }
+            posx--;
+        }
+        
+        posx = x+1;
+        //cap = tab.getCasa(posx, y);
+        while(posx < 8){
+            verifica = Jogo.tabuleiro.getCasa(posx,y);
+            
+            if(verifica.getPeca() == null){
+                movimentosPossiveis.add(verifica);
+            }
+            else if(verifica.getPeca().getTipoGeral() == getTipoGeral()){
+                break;
+            }
+            else{
+                movimentosPossiveis.add(verifica);
+                break;
+            }
+            posx++;
+        }
+        
+        int posy = y-1;
+        //cap = tab.getCasa(x, posy);
+        while(posy >= 0){
+            verifica = Jogo.tabuleiro.getCasa(x,posy);
+            
+            if(verifica.getPeca() == null){
+                movimentosPossiveis.add(verifica);
+            }
+            else if(verifica.getPeca().getTipoGeral() == getTipoGeral()){
+                break;
+            }
+            else{
+                movimentosPossiveis.add(verifica);
+                break;
+            }
+            posy--;
+        }
+        
+        posy = y+1;
+        //cap = tab.getCasa(x, posy);
+        while(posy < 8){
+            verifica = Jogo.tabuleiro.getCasa(x,posy);
+            
+            if(verifica.getPeca() == null){
+                movimentosPossiveis.add(verifica);
+            }
+            else if(verifica.getPeca().getTipoGeral() == getTipoGeral()){
+                break;
+            }
+            else{
+                movimentosPossiveis.add(verifica);
+                break;
+            }
+            posy++;
+        }
+        return movimentosPossiveis;
+    }
       
     
     

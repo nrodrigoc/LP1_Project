@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 /**
  * Escreva a descrição da classe Torre aqui.
  * 
@@ -13,29 +14,23 @@ public class Rainha extends Peca
     public Rainha(Casa casa, int tipo)
     {
         super(casa, tipo);
+        
     }
 
     public void mover(Casa destino){
-        
         if(casa.getX() == destino.getX() || casa.getY() == destino.getY()){
             movimentoComum(destino);
         }else{
             movDiagonal(destino);
         }
-        
     }  
     
-    
-    
     public void capturar(Casa destino){
-        
         if(casa.getX() == destino.getX() || casa.getY() == destino.getY()){
             capturaComum(destino);
         }else{
             capturaDiagonal(destino);
         }        
-        
-        
     }
     
     /**Captura de pecas nas direcoes vertical e horizontal
@@ -45,7 +40,6 @@ public class Rainha extends Peca
     public void capturaComum(Casa destino){
         //podeCapturar - avalia se pode pode capturar a peca alvo
         boolean podeCapturar = false;
-        
         //movimentacao para cima
         if(casa.getX() == destino.getX() && destino.getY() > casa.getY()){
             podeCapturar = true;
@@ -82,10 +76,6 @@ public class Rainha extends Peca
                 }
             }
         }
-        
-        
-      
-        
         //Captura a peca, caso seja permitido
         if(podeCapturar){
             super.capturar(destino);
@@ -136,18 +126,11 @@ public class Rainha extends Peca
                 }
             }
         }
-        
-        
-      
-        
         //Movimenta a peca, caso seja permitido
         if(podeIr){
             super.mover(destino);
         }
     }     
-    
-    
-    
     
     public void movDiagonal(Casa destino){
         
@@ -194,14 +177,11 @@ public class Rainha extends Peca
                 }
             }             
         }
-        
-
-        
+       
         if(podeIr){
             super.mover(destino);
         }        
     }    
-    
     
     /**
      * Captura pecas nas direcoes diagonais
@@ -253,12 +233,88 @@ public class Rainha extends Peca
             }             
         }
         
-
-        
         if(podeIr){
             super.capturar(destino);
-        }        
-           
+        }         
+    }
+    
+    public ArrayList<Casa> possibilidades(Casa casa, Casa verifica){
+        movimentosPossiveis.clear();
+        int x = casa.getX();
+        int y = casa.getY();
+        int posx = x-1;
+        
+        //Casa verifica = tab.getCasa(x,y);
+        while(posx >= 0){
+            verifica = Jogo.tabuleiro.getCasa(posx,y);
+            //verifica.setX(posx);
+            if(verifica.getPeca() == null){
+                movimentosPossiveis.add(verifica);
+            }
+            else if(verifica.getPeca().getTipoGeral() == getTipoGeral()){
+                break;
+            }
+            else{
+                movimentosPossiveis.add(verifica);
+                break;
+            }
+            posx--;
+        }
+        
+        posx = x+1;
+        //cap = tab.getCasa(posx, y);
+        while(posx < 8){
+            verifica = Jogo.tabuleiro.getCasa(posx,y);
+            
+            if(verifica.getPeca() == null){
+                movimentosPossiveis.add(verifica);
+            }
+            else if(verifica.getPeca().getTipoGeral() == getTipoGeral()){
+                break;
+            }
+            else{
+                movimentosPossiveis.add(verifica);
+                break;
+            }
+            posx++;
+        }
+        
+        int posy = y-1;
+        //cap = tab.getCasa(x, posy);
+        while(posy >= 0){
+            verifica = Jogo.tabuleiro.getCasa(x,posy);
+            
+            if(verifica.getPeca() == null){
+                movimentosPossiveis.add(verifica);
+            }
+            else if(verifica.getPeca().getTipoGeral() == getTipoGeral()){
+                break;
+            }
+            else{
+                movimentosPossiveis.add(verifica);
+                break;
+            }
+            posy--;
+        }
+        
+        posy = y+1;
+        //cap = tab.getCasa(x, posy);
+        while(posy < 8){
+            verifica = Jogo.tabuleiro.getCasa(x,posy);
+            
+            if(verifica.getPeca() == null){
+                movimentosPossiveis.add(verifica);
+            }
+            else if(verifica.getPeca().getTipoGeral() == getTipoGeral()){
+                break;
+            }
+            else{
+                movimentosPossiveis.add(verifica);
+                break;
+            }
+            posy++;
+        }
+        return movimentosPossiveis;
     }
     
 }

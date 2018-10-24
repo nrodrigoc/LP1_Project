@@ -1,3 +1,6 @@
+
+import java.util.ArrayList;
+
 /**
  * Escreva a descrição da classe Peao aqui.
  * 
@@ -12,7 +15,7 @@ public class Peao extends Peca
      * Construtor para objetos da classe Peao
      */
     public Peao(Casa casa, int tipo)
-    {           
+    {
         super(casa, tipo);
         this.casa = casa;
         if(tipo == PEAO_BRANCO) {
@@ -75,8 +78,7 @@ public class Peao extends Peca
         
         
     }
-    
-    
+ 
     
     /**
      * Faz a captura de uma peça 
@@ -85,10 +87,28 @@ public class Peao extends Peca
     public void capturar(Casa destino){
         //movimento nas diagonais, mais a direção no Y para não capturar para trás
         if((casa.getX()+1 == destino.getX() || casa.getX()-1 == destino.getX()) && casa.getY()+direcao == destino.getY()){
-            super.capturar(destino); 
+                super.capturar(destino); 
         }
         
     }
     
     
+    /*
+    /**
+     * @return se existe alguma peca ao noroeste que possa ser comida
+     *
+    public boolean podeComerEsquerdo(){
+        //c1 e c2 casas onde o peao comeria caso houvesse pecas
+        if(casa.getX()-1 >= 0){
+            Casa c1 = Jogo.getTabuleiro().getCasa(casa.getX()+1, casa.getY()-1); 
+            if(c1.possuiPeca() && c1.getPeca().getTipoGeral() != casa.getPeca().getTipoGeral()){
+                return true;
+            }
+        }
+        return false;
+    }*/
+    
+    public ArrayList<Casa> possibilidades(Casa destino, Casa verifica){
+        return movimentosPossiveis;
+    }
 }

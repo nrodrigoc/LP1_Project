@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 /**
  * Escreva a descrição da classe Rei aqui.
  * 
@@ -54,5 +55,9 @@ public class Rei extends Peca
             super.capturar(destino);
         }
        
+    }
+    
+    public ArrayList<Casa> possibilidades(Casa destino, Casa verifica){
+        return movimentosPossiveis;
     }
 }

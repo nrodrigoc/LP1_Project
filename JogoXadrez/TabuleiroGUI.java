@@ -98,6 +98,7 @@ public class TabuleiroGUI extends JPanel {
                             casaGUI.colocarPeaoPreto();
                             break;
                         case Peca.PEAO_BRANCO:
+                        
                             casaGUI.colocarPeaoBranco();
                             break;
                         case Peca.TORRE_BRANCO:
@@ -133,6 +134,25 @@ public class TabuleiroGUI extends JPanel {
         }
     }
 
+    public void atualizarP(Jogo jogo){
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                CasaGUI casaGUI = casas[x][y];
+                
+                Tabuleiro tabuleiro = jogo.getTabuleiro();
+                Casa casa = tabuleiro.getCasa(x, y);
+                Peca peca = casa.getPeca();
+                if (casa.possuiPeca() && peca.getTipo() == 1 && casa.getY() == 7) {
+                    
+                    casaGUI.colocarRainhaBranca();
+                    
+                }
+                
+            }
+        }
+    }
+    
+    
     public JanelaPrincipal getJanela() {
         return janela;
     }

@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-
 /**
  * Representa uma Peca do jogo.
  * Possui uma casa e um tipo associado.
@@ -7,7 +6,7 @@ import java.util.ArrayList;
  * @author Alan Moraes &lt;alan@ci.ufpb.br&gt;
  * @author Leonardo Villeth &lt;lvilleth@cc.ci.ufpb.br&gt;
  */
-public  class Peca {
+public abstract class Peca {
     
     public static final int BISPO_BRANCO = 0;
     public static final int PEAO_BRANCO = 1;
@@ -28,12 +27,12 @@ public  class Peca {
     protected Casa origem;
     protected Casa casa;
     protected int tipo;
+    protected ArrayList<Casa> movimentosPossiveis;
     private int tipoGeral;
-    protected int jogador;
-    public boolean movimentoPermitido;
+    public abstract ArrayList<Casa> possibilidades(Casa casa, Casa verifica);
     
     //enPassant - guarda "true" caso o Peao esteja em "en Passant"
-    protected boolean enPassant;    
+    protected boolean enPassant;
     //primeiroMovimento - guarda "true" a peca ainda nao se movimentou na partida
     public boolean primeiroMovimento;
     
@@ -42,11 +41,10 @@ public  class Peca {
         this.origem = casa;
         this.casa = casa;
         this.tipo = tipo;
+        movimentosPossiveis = new ArrayList<Casa>();
         casa.colocarPeca(this);
-        this.jogador = 0;
         enPassant = false;
     }
-    
     
     /**
      * Movimenta a peca para uma nova casa.
@@ -66,17 +64,14 @@ public  class Peca {
 
     }    
     
-    
     /**
      * Faz a captura de uma peça.
      * @param destino nova casa que irá conter esta peca.
      * @param capturada a casa que conter a peça que será capturada.
      */
     public void capturar(Casa destino) {
-        if(destino.possuiPeca() && (getTipoGeral() != destino.getPeca().getTipoGeral())){
-            if(destino.getPeca().getTipo() == Peca.PEAO_BRANCO || destino.getPeca().getTipo() == Peca.PEAO_PRETO){
-                Jogo.peoes.remove(destino.getPeca());
-            }
+        if(destino.possuiPeca() && (getTipoGeral() != destino.getPeca().getTipoGeral()) 
+        && !(destino.getPeca() instanceof Rei)){
             casa.removerPeca();
             destino.removerPeca();
             destino.colocarPeca(this);
@@ -86,7 +81,6 @@ public  class Peca {
             casa = destino;
         }
     }
-    
     
     /**
      * Valor    Tipo
@@ -123,7 +117,6 @@ public  class Peca {
         return tipoGeral;
     }
     
-    
     /**
      * @return true se a peca movida possibilita o en passant
      */
@@ -147,11 +140,13 @@ public  class Peca {
         this.enPassant = b;
     }
     
+    
     /**
      * @return true se for o primeiro movimento da peca
      */
     public boolean getMovimento(){
         return primeiroMovimento;
-    }    
+    }  
+    
     
 }

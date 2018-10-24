@@ -1,4 +1,4 @@
-
+import java.util.ArrayList;
 /**
  * Escreva a descrição da classe Bispo aqui.
  * 
@@ -66,14 +66,11 @@ public class Bispo extends Peca
             }             
         }
         
-
-        
         if(podeIr){
             super.mover(destino);
             primeiroMovimento = true;
         }        
     }
-    
     
     public void capturar(Casa destino){
         boolean podeIr = false;
@@ -129,4 +126,7 @@ public class Bispo extends Peca
            
     }        
     
+    public ArrayList<Casa> possibilidades(Casa casa, Casa verifica){
+        return movimentosPossiveis;
+    }
 }

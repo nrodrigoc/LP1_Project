@@ -41,7 +41,9 @@ public class CasaGUI extends JButton {
     public static final int PECA_BRANCA = 0;
     public static final int PECA_PRETA = 1;
     
-
+    public static final int PEAOBRANCO = 2;
+    public static final int PEAOPRETO = 3;
+    
     private int x;
     private int y;
     private Color cor;
@@ -138,6 +140,20 @@ public class CasaGUI extends JButton {
         }
         else if (icone == BISPO_PRETO || icone == PEAO_PRETO || icone == TORRE_PRETO || icone == CAVALO_PRETO || icone == RAINHA_PRETO || icone == REI_PRETO) {
              return PECA_PRETA;
+        }
+        else {
+            return SEM_PECA;
+        }
+    }
+    
+    public int getCorPeao() {
+        Icon icone = getIcon();
+        
+        if (icone == PEAO_BRANCO) {
+            return PEAOBRANCO;
+        }
+        else if (icone == PEAO_PRETO) {
+             return PEAOPRETO;
         }
         else {
             return SEM_PECA;

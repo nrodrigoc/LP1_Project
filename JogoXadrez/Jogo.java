@@ -1,10 +1,6 @@
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
-
-
-
-
 /**
  * Armazena o tabuleiro e responsavel por posicionar as pecas.
  * 
@@ -13,11 +9,10 @@ import javax.swing.JOptionPane;
  */
 public class Jogo {
 
-    private static Tabuleiro tabuleiro;
+    public static Tabuleiro tabuleiro;
     private int jogador;
     private boolean movimentoPermitido;
     public static ArrayList<Peca> peoes; 
-    
     
     public Jogo() {
         peoes = new ArrayList<>();
@@ -104,34 +99,24 @@ public class Jogo {
      */
     public void moverPeca(int origemX, int origemY, int destinoX, int destinoY) {
         Casa origem = tabuleiro.getCasa(origemX, origemY);
-        Casa destino = tabuleiro.getCasa(destinoX, destinoY);        
+        Casa destino = tabuleiro.getCasa(destinoX, destinoY);
         Peca peca = origem.getPeca();
         peca.mover(destino);
         
-        if(destino.getPeca() != null){
-            mudarJogador(origemX, origemY, destinoX, destinoY);
-            if(destino.getPeca().getTipo() == Peca.TORRE_BRANCO || destino.getPeca().getTipo() == Peca.TORRE_PRETO){
-                if(podeRoque(destino)){
-                    int x = destino.getX();
-                    int y = destino.getY();
-                    if(noLimite(x+1, y) && destino.getX() > origem.getX()){
-                        Casa casa1 = tabuleiro.getCasa(x+1,y);
-                        if(casa1.possuiPeca() && (casa1.getPeca().getTipo() == Peca.REI_BRANCO || casa1.getPeca().getTipo() == Peca.REI_PRETO) && 
-                            casa1.getPeca().getMovimento() == true){
-                                roque(casa1, destino);
-                        }
-                   }
-                   else if(noLimite(x-1, y) && destino.getX() < origem.getX()){
-                       Casa casa2 = tabuleiro.getCasa(x-1,y);
-                       if(casa2.possuiPeca() && (casa2.getPeca().getTipo() == Peca.REI_BRANCO || casa2.getPeca().getTipo() == Peca.REI_PRETO) &&
-                            casa2.getPeca().getMovimento() == true){
-                                roque(casa2, destino);
-                       }
-                   }
-                } 
+        if(destino.possuiPeca()){
+            mudarJogador(origemX, origemY, destinoX, destinoY);        
+            //Movimento Roque
+            if(podeRoque(destino) && destino.getX() > origem.getX()){
+                Casa casaRei = tabuleiro.getCasa(destino.getX()+1, destino.getY());
+                roque(casaRei, destino);
+                
+            }else if(podeRoque(destino) && destino.getX() < origem.getX()){
+                Casa casaRei = tabuleiro.getCasa(destino.getX()-1,destino.getY());
+                roque(casaRei, destino);
+                
             }
-        
         }
+        
     }
     
     /**
@@ -148,30 +133,18 @@ public class Jogo {
         Casa destino = tabuleiro.getCasa(destinoX, destinoY);
         Peca peca = origem.getPeca();
         peca.capturar(destino);
-        
-                
-        if(destino.getPeca() != null && peca.getTipoGeral() != destino.getPeca().getTipoGeral()){
+        if(destino.possuiPeca() && (destino.getX() != origem.getX() || destino.getY() != origem.getY())){
             mudarJogador(origemX, origemY, destinoX, destinoY);
         }
-              
-        continuarJogador(origemX, origemY, destinoX, destinoY);
+        /*else{
+            continuarJogador(origemX, origemY, destinoX, destinoY);
+        }*/
     }
     
-    
-    /*public static void peoes(){
-        int i = 1;
-        for(Peca peao: peoes){
-            System.out.println("peao - " + i);
-            i++;
-        }
-    }*/
-    
-    
-    
-    /**
-     * @return true se a casa selecionada possui peca
+    /**@param x linha
+     * @param y coluna
+     * @return se há uma peca na posicao solicitada 
      */
-    
     public static boolean possuiP(int x, int y){
         Casa c1 = tabuleiro.getCasa(x,y);
         if(c1.possuiPeca()){
@@ -181,7 +154,6 @@ public class Jogo {
         }
         return false;
     }
-    
     
     public int getJogador(){
         return jogador;
@@ -201,6 +173,9 @@ public class Jogo {
         return false;
     }
     
+    /**
+     * Troca o jogador da vez
+     */
     private void mudarJogador(int origemX, int origemY, int destinoX, int destinoY){
         Casa origem = tabuleiro.getCasa(origemX, origemY);
         Casa destino = tabuleiro.getCasa(destinoX, destinoY);
@@ -213,7 +188,11 @@ public class Jogo {
         }
     }
     
-    private void continuarJogador(int origemX, int origemY, int destinoX, int destinoY){
+    /*
+    /**
+     * Mantem a rodada no mesmo jogador
+     */
+    /*private void continuarJogador(int origemX, int origemY, int destinoX, int destinoY){
         Casa origem = tabuleiro.getCasa(origemX, origemY);
         Casa destino = tabuleiro.getCasa(destinoX, destinoY);
         Peca peca = destino.getPeca();
@@ -225,7 +204,7 @@ public class Jogo {
                jogador = 1;
            }
         }
-    }
+    }*/
    
     /**
      * @return true se as casas estao no limite do tabuleiro
@@ -256,38 +235,32 @@ public class Jogo {
         rei.primeiroMovimento = false;
     }
     
-    
-    public static void removePassant(){
-        for(Peca peao: peoes){
-            peao.setPassant(false);
-        }
-    }
-    
     /**
      * @return se o movimento roque pode ser feito
      * 
      */
     
-    public boolean podeRoque(Casa casa1){
+    public boolean podeRoque(Casa casaTorre){
         int x = 0;
         int y = 0;
-        if(casa1.getPeca().getTipo() == Peca.TORRE_BRANCO || 
-        casa1.getPeca().getTipo() == Peca.TORRE_PRETO){
-            x = casa1.getX();
-            y = casa1.getY();
-            Casa casa2 = tabuleiro.getCasa(x+1,y);
-            if(casa2.possuiPeca() && (casa2.getPeca().getTipo() == Peca.REI_BRANCO ||
-            casa2.getPeca().getTipo() == Peca.REI_PRETO)){
-                return true;
+        if(casaTorre.getPeca() instanceof Torre){
+            x = casaTorre.getX();
+            y = casaTorre.getY();
+            
+            if(noLimite(x+1, y)){
+                Casa casaRei = tabuleiro.getCasa(x+1,y);
+                if(casaRei.possuiPeca() && (casaRei.getPeca() instanceof Rei) && casaRei.getPeca().getMovimento() == true){
+                    return true;
+                }
             }
         
-            Casa casa3 = tabuleiro.getCasa(x-1,y);
-            if(casa3.possuiPeca() && (casa3.getPeca().getTipo() == Peca.REI_BRANCO ||
-            casa3.getPeca().getTipo() == Peca.REI_PRETO)){
-                return true;
-            }
-            
-            
+            if(noLimite(x-1, y)){
+                Casa casaRei2 = tabuleiro.getCasa(x-1,y);
+                if(casaRei2.possuiPeca() && (casaRei2.getPeca() instanceof Rei) && casaRei2.getPeca().getMovimento() == true){
+                    return true;
+                }
+            }  
+                        
         }
             
         return false;
@@ -297,17 +270,13 @@ public class Jogo {
         Casa origem = tabuleiro.getCasa(origemX, origemY);
         Casa destino = tabuleiro.getCasa(destinoX, destinoY);
         Peca peca = destino.getPeca();
-        Object[] pecas = {"Torre", "Bispo", "Cavalo", "Rei", "Rainha"};
+        Object[] pecas = {"Torre", "Bispo", "Cavalo", "Rainha"};
         if(peca != null && peca.getTipo() == 1 && destino.getY() == 7){
             Object selecionarPecasB = JOptionPane.showOptionDialog(null, "Escolha uma peca", "selectionValues",JOptionPane.DEFAULT_OPTION, 
                                             JOptionPane.INFORMATION_MESSAGE, null,pecas, pecas[0]);
-            if(selecionarPecasB.equals(4)){
+            if(selecionarPecasB.equals(3)){
                 destino.removerPeca();
                 Peca rainha = new Rainha(destino, Peca.RAINHA_BRANCO);
-            }
-            else if(selecionarPecasB.equals(3)){
-                destino.removerPeca();
-                Peca rei = new Rei(destino, Peca.REI_BRANCO);
             }
             else if(selecionarPecasB.equals(2)){
                 destino.removerPeca();
@@ -328,13 +297,9 @@ public class Jogo {
         else if(peca != null && peca.getTipo() == 7 && destino.getY() == 0){
             Object selecionarPecasP = JOptionPane.showOptionDialog(null, "Escolha uma peca", "selectionValues",JOptionPane.DEFAULT_OPTION, 
                                             JOptionPane.INFORMATION_MESSAGE, null,pecas, pecas[0]);
-            if(selecionarPecasP.equals(4)){
+            if(selecionarPecasP.equals(3)){
                 destino.removerPeca();
                 Peca rainha = new Rainha(destino, Peca.RAINHA_PRETO);
-            }
-            else if(selecionarPecasP.equals(3)){
-                destino.removerPeca();
-                Peca rei = new Rei(destino, Peca.REI_PRETO);
             }
             else if(selecionarPecasP.equals(2)){
                 destino.removerPeca();
@@ -353,8 +318,118 @@ public class Jogo {
             }
         }
     }
-        
-        
+    
+    public boolean check(int destinoX, int destinoY){
+        Casa destino = tabuleiro.getCasa(destinoX, destinoY);
+        Peca peca = destino.getPeca();
+        for(int i = 0; i < 8; i++) {
+            for(int j = 0; j < 8; j++) {
+                Casa casa = tabuleiro.getCasa(i,j);
+                if(casa.possuiPeca() && ((casa.getPeca().getTipo() == 5 && jogador == 0) || (casa.getPeca().getTipo() == 11 && jogador == 1))){
+                    //verifica o lado direito
+                    for(int k = i+1; k < 8; k++){
+                        Casa casaAdversaria = tabuleiro.getCasa(k,j);
+                        if(casaAdversaria.getPeca() == null){
+                            continue;
+                        }
+                        else if(casaAdversaria.getPeca().getTipoGeral() == casa.getPeca().getTipoGeral()){
+                             break;
+                        }
+                        else{
+                                if(casaAdversaria.getPeca() instanceof Torre /*|| (casaAdversaria.getPeca() instanceof Rainha)*/){
+                                    peca.possibilidades(casaAdversaria, destino);
+                                    if(peca.movimentosPossiveis.contains(casaAdversaria)){
+                                        JOptionPane.showMessageDialog(null, "check");
+                                        return true;
+                                    }
+                                }
+                                else{
+                                    break;
+                                }
+                        }
+                    }
+                    //verifica o lado esquerdo
+                    for(int k = i-1; k >= 0; k--){
+                        Casa casaAdversaria = tabuleiro.getCasa(k,j);
+                        if(casaAdversaria.getPeca() == null){
+                            continue;
+                        }
+                        else if(casaAdversaria.getPeca().getTipoGeral() == casa.getPeca().getTipoGeral()){
+                             break;
+                        }
+                        else{
+                                if(casaAdversaria.getPeca() instanceof Torre /*|| (casaAdversaria.getPeca() instanceof Rainha)*/){
+                                    peca.possibilidades(casaAdversaria, destino);
+                                    if(peca.movimentosPossiveis.contains(casa)){
+                                        JOptionPane.showMessageDialog(null, "check");
+                                        return true;
+                                    }
+                                }
+                                else{
+                                    break;
+                                }
+                        }
+                    }
+                    //verifica para cima
+                    for(int l = j+1; l < 8; l++){
+                        Casa casaAdversaria = tabuleiro.getCasa(i,l);
+                        if(casaAdversaria.getPeca() == null){
+                            continue;
+                        }
+                        else if(casaAdversaria.getPeca().getTipoGeral() == casa.getPeca().getTipoGeral()){
+                             break;
+                        }
+                        else{
+                                if(casaAdversaria.getPeca() instanceof Torre /*|| (casaAdversaria.getPeca() instanceof Rainha)*/){
+                                    peca.possibilidades(casaAdversaria, destino);
+                                    if(peca.movimentosPossiveis.contains(casa)){
+                                        JOptionPane.showMessageDialog(null, "check");
+                                        return true;
+                                    }
+                                }
+                                else{
+                                    break;
+                                }
+                        }
+                    }
+                    //verifica para baixo
+                    for(int l = j-1; l >= 0; l--){
+                        Casa casaAdversaria = tabuleiro.getCasa(i,l);
+                        if(casaAdversaria.getPeca() == null){
+                            continue;
+                        }
+                        else if(casaAdversaria.getPeca().getTipoGeral() == casa.getPeca().getTipoGeral()){
+                             break;
+                        }
+                        else{
+                                if(casaAdversaria.getPeca() instanceof Torre /*|| (casaAdversaria.getPeca() instanceof Rainha)*/){
+                                    peca.possibilidades(casaAdversaria, destino);
+                                    if(peca.movimentosPossiveis.contains(casa)){
+                                        JOptionPane.showMessageDialog(null, "check");
+                                        return true;
+                                    }
+                                }
+                                else{
+                                    break;
+                                }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * retira o passant depois de uma rodada
+     */
+    
+    public static void removePassant(){
+        for(Peca peao: peoes){
+            peao.setPassant(false);
+        }
+    }    
+    
     
     /**
      * @return o Tabuleiro em jogo.
