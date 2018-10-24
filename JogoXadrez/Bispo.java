@@ -35,6 +35,7 @@ public class Bispo extends Peca
             for(int count = 1; count <= (destinoX - origemX); count++){
                 if(Jogo.possuiP(origemX+count, origemY+count)){
                     podeIr = false;
+                    return;
                 }
             }
         }else if(destinoX < origemX && destinoY < origemY && (origemX - destinoX) == (origemY - destinoY)){
@@ -44,6 +45,7 @@ public class Bispo extends Peca
             for(int count = 1; count <= (origemX - destinoX); count++){
                 if(Jogo.possuiP(origemX-count, origemY-count)){
                     podeIr = false;
+                    return;
                 }
             }
         }else if(destinoX > origemX && destinoY < origemY && (destinoX - origemX) == (origemY - destinoY)){
@@ -53,6 +55,7 @@ public class Bispo extends Peca
             for(int count = 1; count <= (destinoX - origemX); count++){
                 if(Jogo.possuiP(origemX+count, origemY-count)){
                     podeIr = false;
+                    return;
                 }
             }            
         }else if(destinoX < origemX && destinoY > origemY && (origemX - destinoX) == (destinoY - origemY)){
@@ -62,6 +65,7 @@ public class Bispo extends Peca
             for(int count = 1; count <= (origemX - destinoX); count++){
                 if(Jogo.possuiP(origemX-count, origemY+count)){
                     podeIr = false;
+                    return;
                 }
             }             
         }
