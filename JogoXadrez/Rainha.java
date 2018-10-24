@@ -247,7 +247,6 @@ public class Rainha extends Peca
         //Casa verifica = tab.getCasa(x,y);
         while(posx >= 0){
             verifica = Jogo.tabuleiro.getCasa(posx,y);
-            //verifica.setX(posx);
             if(verifica.getPeca() == null){
                 movimentosPossiveis.add(verifica);
             }
@@ -265,7 +264,6 @@ public class Rainha extends Peca
         //cap = tab.getCasa(posx, y);
         while(posx < 8){
             verifica = Jogo.tabuleiro.getCasa(posx,y);
-            
             if(verifica.getPeca() == null){
                 movimentosPossiveis.add(verifica);
             }

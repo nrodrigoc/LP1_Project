@@ -57,10 +57,12 @@ public class JanelaPrincipal extends JFrame {
                 }else if(casaClicadaDestino.possuiPeca() && casaClicadaDestino.getCorPeca() == CasaGUI.SEM_PECA){
                     jogo.moverPeca(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
                                    casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
+                                   promocaoPeao();
                 }
                 else{
                     jogo.capturarPeca(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
                                    casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
+                                   promocaoPeao();
                     if(casaClicadaOrigem.getPosicaoX() == casaClicadaDestino.getPosicaoX() && casaClicadaOrigem.getPosicaoY() == casaClicadaDestino.getPosicaoY()){
                         JOptionPane.showMessageDialog(this, "Realize sua jogada novamente");
                     }

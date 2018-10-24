@@ -60,6 +60,7 @@ public class Cavalo extends Peca
         int y = casa.getY();
         int cavaloX[] = {x+1,x-1,x+2,x-2};
         int cavaloY[] = {y+1,y-1,y+2,y-2};
+        
         for(int i = 0; i < 4; i++){
            for(int j = 0; j < 4; j++){ 
                 if((cavaloX[i] >=0 && cavaloX[i] < 8) && (cavaloY[j] >= 0 && cavaloY[j] < 8)){
