@@ -62,6 +62,9 @@ public class Torre extends Peca
             }
         }
         
+        
+      
+        
         //Movimenta a peca, caso seja permitido
         if(podeIr){
             super.mover(destino);
@@ -115,7 +118,7 @@ public class Torre extends Peca
             super.capturar(destino);
             
         }
-
+        
     }
     
     public ArrayList<Casa> possibilidades(Casa casa, Casa verifica){
@@ -127,7 +130,6 @@ public class Torre extends Peca
         //Casa verifica = tab.getCasa(x,y);
         while(posx >= 0){
             verifica = Jogo.tabuleiro.getCasa(posx,y);
-            //verifica.setX(posx);
             if(verifica.getPeca() == null){
                 movimentosPossiveis.add(verifica);
             }
@@ -145,7 +147,6 @@ public class Torre extends Peca
         //cap = tab.getCasa(posx, y);
         while(posx < 8){
             verifica = Jogo.tabuleiro.getCasa(posx,y);
-            
             if(verifica.getPeca() == null){
                 movimentosPossiveis.add(verifica);
             }
