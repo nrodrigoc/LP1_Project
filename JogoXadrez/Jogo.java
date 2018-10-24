@@ -103,8 +103,7 @@ public class Jogo {
         Peca peca = origem.getPeca();
         peca.mover(destino);
         
-        if(destino.possuiPeca()){
-            mudarJogador(origemX, origemY, destinoX, destinoY);        
+        if(destino.possuiPeca()){        
             //Movimento Roque
             if(podeRoque(destino) && destino.getX() > origem.getX()){
                 Casa casaRei = tabuleiro.getCasa(destino.getX()+1, destino.getY());
@@ -115,6 +114,10 @@ public class Jogo {
                 roque(casaRei, destino);
                 
             }
+        }
+        
+        if(!origem.possuiPeca()){
+            mudarJogador(origemX, origemY, destinoX, destinoY);   
         }
         
     }
@@ -133,7 +136,7 @@ public class Jogo {
         Casa destino = tabuleiro.getCasa(destinoX, destinoY);
         Peca peca = origem.getPeca();
         peca.capturar(destino);
-        if(destino.possuiPeca() && (destino.getX() != origem.getX() || destino.getY() != origem.getY())){
+        if(!origem.possuiPeca()){
             mudarJogador(origemX, origemY, destinoX, destinoY);
         }
         /*else{
