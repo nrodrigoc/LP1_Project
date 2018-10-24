@@ -86,6 +86,7 @@ public class JanelaPrincipal extends JFrame {
             primeiroClique = false;
         }
         else{
+            apagar();
             JOptionPane.showMessageDialog(this, "Movimento pertence ao outro time");
             primeiroClique = true;
             casaClicadaOrigem.atenuar();
@@ -113,12 +114,15 @@ public class JanelaPrincipal extends JFrame {
         
         if(origemx.getPeca().getTipo() == Peca.PEAO_BRANCO && primeiroMovimento /*&& !destino2.possuiPeca()*/){
             tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).destacar();
+            
             tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+2).destacar();
             /*if(origemx.getPeca().podeComerEsquerdo()){
                 
             }*/
         }else if(origemx.getPeca().getTipo() == Peca.PEAO_BRANCO && !primeiroMovimento /*&& destino2.possuiPeca()*/){
-            tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).destacar();            
+            if(jogo.noLimite(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1)){
+                tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).destacar();     
+            }
         }
     }
     
