@@ -70,7 +70,8 @@ public abstract class Peca {
      * @param capturada a casa que conter a peça que será capturada.
      */
     public void capturar(Casa destino) {
-        if(destino.possuiPeca() && (getTipoGeral() != destino.getPeca().getTipoGeral())){
+        if(destino.possuiPeca() && (getTipoGeral() != destino.getPeca().getTipoGeral()) 
+        && !(destino.getPeca() instanceof Rei)){
              if(destino.getPeca() instanceof Peao){
                 Jogo.peoes.remove(destino.getPeca());
             }

@@ -39,7 +39,7 @@ public class JanelaPrincipal extends JFrame {
                         JOptionPane.showMessageDialog(this, "Salve seu rei");
                         return;
                     }
-                    //acender();
+                    
                     casaClicadaOrigem.destacar();
                     primeiroClique = false;
                     turno();                
@@ -86,7 +86,7 @@ public class JanelaPrincipal extends JFrame {
             primeiroClique = false;
         }
         else{
-            apagar();
+            
             JOptionPane.showMessageDialog(this, "Movimento pertence ao outro time");
             primeiroClique = true;
             casaClicadaOrigem.atenuar();
@@ -100,75 +100,6 @@ public class JanelaPrincipal extends JFrame {
         }
     }
         
-    /**
-     * Destaca as casas onde a peca pode ir
-     * 
-     */
-    public void acender(){
-        Casa origemx = jogo.getTabuleiro().getCasa(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY());
-                   
-        //Casa destino2 = jogo.getTabuleiro().getCasa(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY()+2);
-        
-        //primeiroMovimento - verifica se eh o primeiro movimento da peca
-        primeiroMovimento = origemx.getPeca().getMovimento();
-        
-        if(origemx.getPeca().getTipo() == Peca.PEAO_BRANCO && primeiroMovimento /*&& !destino2.possuiPeca()*/){
-            tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).destacar();
-            
-            tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+2).destacar();
-            /*if(origemx.getPeca().podeComerEsquerdo()){
-                
-            }*/
-        }else if(origemx.getPeca().getTipo() == Peca.PEAO_BRANCO && !primeiroMovimento /*&& destino2.possuiPeca()*/){
-            if(jogo.noLimite(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1)){
-                tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).destacar();     
-            }
-        }
-    }
-    
-    /**
-     * Atenua as casas destacadas pelo metodo acender
-     * 
-     */
-    public void apagar(){
-        Casa destinox = jogo.getTabuleiro().getCasa(casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
-        if(!jogo.getTabuleiro().getCasa(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY()).possuiPeca()
-          && destinox.getPeca().getTipo()  == Peca.PEAO_BRANCO){
-            
-                tabuleiroGUI.getCasaGUI(casaClicadaDestino.getPosicaoX(),casaClicadaDestino.getPosicaoY()).atenuar();
-                
-                if(jogo.noLimite(casaClicadaDestino.getPosicaoX(),casaClicadaDestino.getPosicaoY()+1)){                   
-                    tabuleiroGUI.getCasaGUI(casaClicadaDestino.getPosicaoX(),casaClicadaDestino.getPosicaoY()+1).atenuar();
-                    
-                }
-                
-                if(jogo.noLimite(casaClicadaDestino.getPosicaoX(),casaClicadaDestino.getPosicaoY()-1)){
-                    tabuleiroGUI.getCasaGUI(casaClicadaDestino.getPosicaoX(),casaClicadaDestino.getPosicaoY()-1).atenuar();
-                    
-                }
-                
-                /*if(jogo.getJogador() == 1 && casaClicadaOrigem.getCorPeca() == 0){
-                /* tabuleiroGUI.getCasaGUI(casaClicadaDestino.getPosicaoX(),casaClicadaDestino.getPosicaoY()).atenuar();
-                }
-                else if(jogo.getJogador() == 0 && casaClicadaOrigem.getCorPeca() == 1){
-                    tabuleiroGUI.getCasaGUI(casaClicadaDestino.getPosicaoX(),casaClicadaDestino.getPosicaoY()).atenuar()
-                }*/
-                 
-            
-        }else if(jogo.getTabuleiro().getCasa(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY()).possuiPeca()){
-              
-                tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()).atenuar();
-                if(jogo.noLimite(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1)){
-                    tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+1).atenuar();
-                    
-                }
-                
-                if(jogo.noLimite(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+2)){
-                    tabuleiroGUI.getCasaGUI(casaClicadaOrigem.getPosicaoX(),casaClicadaOrigem.getPosicaoY()+2).atenuar();
-                       
-                }
-        }
-    }
     
     /**
      * Construtor da classe.
