@@ -139,14 +139,13 @@ public class Jogo {
         if(!origem.possuiPeca()){
             mudarJogador(origemX, origemY, destinoX, destinoY);
         }
-        /*else{
-            continuarJogador(origemX, origemY, destinoX, destinoY);
-        }*/
     }
     
-    /**@param x linha
+    /**
+     * Verifica se há um peça na linha x e na coluna y
+     * @param x linha
      * @param y coluna
-     * @return se há uma peca na posicao solicitada 
+     * @return true se há uma peca na posicao solicitada 
      */
     public static boolean possuiP(int x, int y){
         Casa c1 = tabuleiro.getCasa(x,y);
@@ -162,7 +161,12 @@ public class Jogo {
         return jogador;
     }
     
-     public boolean jogador(int origemX, int origemY){
+    /**
+     * Define a vez dos jogadores. As brancas começam o jogo
+     * @param  origemX linha da Casa de origem.
+     * @param  origemY coluna da Casa de origem.
+     */
+    public boolean jogador(int origemX, int origemY){
         Casa origem = tabuleiro.getCasa(origemX, origemY);
         Peca peca = origem.getPeca();
         if(peca.getTipoGeral() == 12 && jogador == 0 || peca.getTipoGeral() == 13 && jogador == 1){
@@ -178,6 +182,10 @@ public class Jogo {
     
     /**
      * Troca o jogador da vez
+     * @param  origemX linha da Casa de origem.
+     * @param  origemY coluna da Casa de origem.
+     * @param  destinoX linha da Casa de destino. 
+     * @param  destinoY coluna da Casa de destino.
      */
     private void mudarJogador(int origemX, int origemY, int destinoX, int destinoY){
         Casa origem = tabuleiro.getCasa(origemX, origemY);
@@ -191,25 +199,9 @@ public class Jogo {
         }
     }
     
-    /*
-    /**
-     * Mantem a rodada no mesmo jogador
-     */
-    /*private void continuarJogador(int origemX, int origemY, int destinoX, int destinoY){
-        Casa origem = tabuleiro.getCasa(origemX, origemY);
-        Casa destino = tabuleiro.getCasa(destinoX, destinoY);
-        Peca peca = destino.getPeca();
-        if(origem.getX() == destino.getX() && origem.getY() == destino.getY()){
-           if(peca.getTipoGeral() == 12 && jogador == 1){
-                jogador = 0;
-            }
-           else  if(peca.getTipoGeral() == 13 && jogador == 0){
-               jogador = 1;
-           }
-        }
-    }*/
    
     /**
+     * Verifica se as casas não passaram do limite do tabuleiro.
      * @return true se as casas estao no limite do tabuleiro
      */
     public boolean noLimite(int x, int y){
@@ -221,28 +213,29 @@ public class Jogo {
    
     /**
      * Realiza o movimento roque
+     * @param a casa do rei.
+     * @param a casa da torre.
      */
-    public void roque(Casa crei, Casa ctorre){
+    public void roque(Casa cRei, Casa cTorre){
         
-        Peca rei = crei.getPeca();
-        Peca torre = ctorre.getPeca();
-        crei.removerPeca();
+        Peca rei = cRei.getPeca();
+        Peca torre = cTorre.getPeca();
+        cRei.removerPeca();
         
-        if(ctorre.getX() == 3){
-            crei = tabuleiro.getCasa(crei.getX()-2, crei.getY());
-        }else if(ctorre.getX() == 5){
-            crei = tabuleiro.getCasa(crei.getX()+2, crei.getY());
+        if(cTorre.getX() == 3){
+            cRei = tabuleiro.getCasa(cRei.getX()-2, cRei.getY());
+        }else if(cTorre.getX() == 5){
+            cRei = tabuleiro.getCasa(cRei.getX()+2, cRei.getY());
         }
        
-        crei.colocarPeca(rei);
+        cRei.colocarPeca(rei);
         rei.primeiroMovimento = false;
     }
     
     /**
-     * @return se o movimento roque pode ser feito
-     * 
+     * Verifica se o movimento roque pode ser realizado
+     * @return true se o movimento roque pode ser feito
      */
-    
     public boolean podeRoque(Casa casaTorre){
         int x = 0;
         int y = 0;
@@ -269,6 +262,13 @@ public class Jogo {
         return false;
     }
     
+    /**
+     * Realiza a promoção do peão, caso ele tenha chegado na última coluna 
+     * @param origemX linha da Casa de origem.
+     * @param origemY coluna da Casa de origem.
+     * @param destinoX linha da Casa de destino
+     * @param destinoY coluna da Casa de destino.
+     */
     public void promocao(int origemX, int origemY, int destinoX, int destinoY){
         Casa origem = tabuleiro.getCasa(origemX, origemY);
         Casa destino = tabuleiro.getCasa(destinoX, destinoY);
@@ -322,7 +322,199 @@ public class Jogo {
         }
     }
     
-    public boolean check(int destinoX, int destinoY){
+    /**
+     * Verifica se a do adversário está atacando o rei do jogador da vez.
+     * @param destinoX linha da Casa de destino da última peça jogada.
+     * @param destinoY coluna da Casa de destino da última peça jogada.
+     * @return true caso o rei do jogador da vez está em xeque
+     */
+    public boolean xeque(int destinoX, int destinoY){
+        Casa destino = tabuleiro.getCasa(destinoX, destinoY);
+        Peca peca = destino.getPeca();
+        if(xequeBispoOuRainha(destinoX, destinoY)){
+            return true;
+        }
+        else if(xequeTorreOuRainha(destinoX, destinoY)){
+            return true;
+        }
+        else if(xequePeao(destinoX,destinoY)){
+            return true;
+        }
+        else if(xequeCavalo(destinoX,destinoY)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
+    /**
+     * Verifica se a torre ou a rainha do adversário está atacando o rei do jogador da vez.
+     * @param destinoX linha da Casa de destino da última peça jogada.
+     * @param destinoY coluna da Casa de destino da última peça jogada.
+     * @return true caso o rei do jogador da vez está em xeque
+     */
+    private boolean xequeBispoOuRainha(int destinoX, int destinoY){
+        Casa destino = tabuleiro.getCasa(destinoX, destinoY);
+        Peca peca = destino.getPeca();
+        for(int i = 0; i < 8; i++) {
+            for(int j = 0; j < 8; j++) {
+                Casa casa = tabuleiro.getCasa(i,j);
+                
+                if(casa.possuiPeca() && ((casa.getPeca().getTipo() == 5 && jogador == 0) || (casa.getPeca().getTipo() == 11 && jogador == 1))){
+                    int k = i+1;
+                    int l = j-1;
+                    while(k < 8 && l >= 0){
+                        Casa casaAdversaria = tabuleiro.getCasa(k,l);
+                        if(casaAdversaria.getPeca() == null){
+                            k++;
+                            l--;
+                            continue;
+                        }
+                        else if(casaAdversaria.getPeca().getTipoGeral() == casa.getPeca().getTipoGeral()){
+                             break;
+                        }
+                        else{
+                                if(casaAdversaria.getPeca() instanceof Bispo || (casaAdversaria.getPeca() instanceof Rainha)){
+                                    peca.possibilidades(casaAdversaria, destino);
+                                    if(peca.movimentosPossiveis.contains(casa)){
+                                        if(casa.getPeca().getTipo() == 5){
+                                            JOptionPane.showMessageDialog(null, "O rei branco está em XEQUE");
+                                            return true;
+                                        }
+                                        else{
+                                            JOptionPane.showMessageDialog(null, "O rei preto está em XEQUE");
+                                            return true;
+                                        }
+                                    }
+                                    else{
+                                        break;
+                                    }
+                                }
+                                else{
+                                    break;
+                                }
+                        }
+                    }
+                    
+                    k = i-1;
+                    l = j+1;
+                    while(k >= 0 && l < 8){
+                        Casa casaAdversaria = tabuleiro.getCasa(k,l);
+                        if(casaAdversaria.getPeca() == null){
+                            k--;
+                            l++;
+                            continue;
+                        }
+                        else if(casaAdversaria.getPeca().getTipoGeral() == casa.getPeca().getTipoGeral()){
+                             break;
+                        }
+                        else{
+                                if(casaAdversaria.getPeca() instanceof Bispo || (casaAdversaria.getPeca() instanceof Rainha)){
+                                    peca.possibilidades(casaAdversaria, destino);
+                                    if(peca.movimentosPossiveis.contains(casa)){
+                                        if(casa.getPeca().getTipo() == 5){
+                                            JOptionPane.showMessageDialog(null, "O rei branco está em XEQUE");
+                                            return true;
+                                        }
+                                        else{
+                                            JOptionPane.showMessageDialog(null, "O rei preto está em XEQUE");
+                                            return true;
+                                        }
+                                    }
+                                    else{
+                                        break;
+                                    }
+                                }
+                                else{
+                                    break;
+                                }
+                        }
+                    }
+                    
+                    k = i+1;
+                    l = j+1;
+                    while(k < 8 && l < 8){
+                        Casa casaAdversaria = tabuleiro.getCasa(k,l);
+                        if(casaAdversaria.getPeca() == null){
+                            k++;
+                            l--;
+                            continue;
+                        }
+                        else if(casaAdversaria.getPeca().getTipoGeral() == casa.getPeca().getTipoGeral()){
+                             break;
+                        }
+                        else{
+                                if(casaAdversaria.getPeca() instanceof Bispo || (casaAdversaria.getPeca() instanceof Rainha)){
+                                    peca.possibilidades(casaAdversaria, destino);
+                                    if(peca.movimentosPossiveis.contains(casa)){
+                                        if(casa.getPeca().getTipo() == 5){
+                                            JOptionPane.showMessageDialog(null, "O rei branco está em XEQUE");
+                                            return true;
+                                        }
+                                        else{
+                                            JOptionPane.showMessageDialog(null, "O rei preto está em XEQUE");
+                                            return true;
+                                        }
+                                    }
+                                    else{
+                                        break;
+                                    }
+                                }
+                                else{
+                                    break;
+                                }
+                        }
+                    }
+                    
+                    k = i-1;
+                    l = j-1;
+                    while(k >= 0 && l >= 0){
+                        Casa casaAdversaria = tabuleiro.getCasa(k,l);
+                        if(casaAdversaria.getPeca() == null){
+                            k--;
+                            l--;
+                            continue;
+                        }
+                        else if(casaAdversaria.getPeca().getTipoGeral() == casa.getPeca().getTipoGeral()){
+                             break;
+                        }
+                        else{
+                                if(casaAdversaria.getPeca() instanceof Bispo || (casaAdversaria.getPeca() instanceof Rainha)){
+                                    peca.possibilidades(casaAdversaria, destino);
+                                    if(peca.movimentosPossiveis.contains(casa)){
+                                        if(casa.getPeca().getTipo() == 5){
+                                            JOptionPane.showMessageDialog(null, "O rei branco está em XEQUE");
+                                            return true;
+                                        }
+                                        else{
+                                            JOptionPane.showMessageDialog(null, "O rei preto está em XEQUE");
+                                            return true;
+                                        }
+                                    }
+                                    else{
+                                        break;
+                                    }
+                                }
+                                else{
+                                    break;
+                                }
+                        }
+                    }
+                }
+                
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * Verifica se a torre ou a rainha do adversário está atacando o rei do jogador da vez.
+     * @param destinoX linha da Casa de destino da última peça jogada.
+     * @param destinoY coluna da Casa de destino da última peça jogada.
+     * @return true caso o rei do jogador da vez está em xeque
+     */
+    private boolean xequeTorreOuRainha(int destinoX, int destinoY){
         Casa destino = tabuleiro.getCasa(destinoX, destinoY);
         Peca peca = destino.getPeca();
         for(int i = 0; i < 8; i++) {
@@ -339,11 +531,20 @@ public class Jogo {
                              break;
                         }
                         else{
-                                if(casaAdversaria.getPeca() instanceof Torre /*|| (casaAdversaria.getPeca() instanceof Rainha)*/){
+                                if(casaAdversaria.getPeca() instanceof Torre || (casaAdversaria.getPeca() instanceof Rainha)){
                                     peca.possibilidades(casaAdversaria, destino);
                                     if(peca.movimentosPossiveis.contains(casaAdversaria)){
-                                        JOptionPane.showMessageDialog(null, "check");
-                                        return true;
+                                        if(casa.getPeca().getTipo() == 5){
+                                            JOptionPane.showMessageDialog(null, "O rei branco está em XEQUE");
+                                            return true;
+                                        }
+                                        else{
+                                            JOptionPane.showMessageDialog(null, "O rei preto está em XEQUE");
+                                            return true;
+                                        }
+                                    }
+                                    else{
+                                        break;
                                     }
                                 }
                                 else{
@@ -361,11 +562,20 @@ public class Jogo {
                              break;
                         }
                         else{
-                                if(casaAdversaria.getPeca() instanceof Torre /*|| (casaAdversaria.getPeca() instanceof Rainha)*/){
+                                if(casaAdversaria.getPeca() instanceof Torre || (casaAdversaria.getPeca() instanceof Rainha)){
                                     peca.possibilidades(casaAdversaria, destino);
                                     if(peca.movimentosPossiveis.contains(casa)){
-                                        JOptionPane.showMessageDialog(null, "check");
-                                        return true;
+                                        if(casa.getPeca().getTipo() == 5){
+                                            JOptionPane.showMessageDialog(null, "O rei branco está em XEQUE");
+                                            return true;
+                                        }
+                                        else{
+                                            JOptionPane.showMessageDialog(null, "O rei preto está em XEQUE");
+                                            return true;
+                                        }
+                                    }
+                                    else{
+                                        break;
                                     }
                                 }
                                 else{
@@ -383,11 +593,20 @@ public class Jogo {
                              break;
                         }
                         else{
-                                if(casaAdversaria.getPeca() instanceof Torre /*|| (casaAdversaria.getPeca() instanceof Rainha)*/){
+                                if(casaAdversaria.getPeca() instanceof Torre || (casaAdversaria.getPeca() instanceof Rainha)){
                                     peca.possibilidades(casaAdversaria, destino);
                                     if(peca.movimentosPossiveis.contains(casa)){
-                                        JOptionPane.showMessageDialog(null, "check");
-                                        return true;
+                                        if(casa.getPeca().getTipo() == 5){
+                                            JOptionPane.showMessageDialog(null, "O rei branco está em XEQUE");
+                                            return true;
+                                        }
+                                        else{
+                                            JOptionPane.showMessageDialog(null, "O rei preto está em XEQUE");
+                                            return true;
+                                        }
+                                    }
+                                    else{
+                                        break;
                                     }
                                 }
                                 else{
@@ -405,11 +624,167 @@ public class Jogo {
                              break;
                         }
                         else{
-                                if(casaAdversaria.getPeca() instanceof Torre /*|| (casaAdversaria.getPeca() instanceof Rainha)*/){
+                                if(casaAdversaria.getPeca() instanceof Torre || (casaAdversaria.getPeca() instanceof Rainha)){
                                     peca.possibilidades(casaAdversaria, destino);
                                     if(peca.movimentosPossiveis.contains(casa)){
-                                        JOptionPane.showMessageDialog(null, "check");
-                                        return true;
+                                        if(casa.getPeca().getTipo() == 5){
+                                            JOptionPane.showMessageDialog(null, "O rei branco está em XEQUE");
+                                            return true;
+                                        }
+                                        else{
+                                            JOptionPane.showMessageDialog(null, "O rei preto está em XEQUE");
+                                            return true;
+                                        }
+                                    }
+                                    else{
+                                        break;
+                                    }
+                                }
+                                else{
+                                    break;
+                                }
+                        }
+                    }
+                    
+                    
+                }
+                break;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * Verifica se peão do adversário está atacando o rei do jogador da vez.
+     * @param destinoX linha da Casa de destino da última peça jogada.
+     * @param destinoY coluna da Casa de destino da última peça jogada.
+     * @return true caso o rei do jogador da vez está em xeque
+     */
+    private boolean xequePeao(int destinoX, int destinoY){
+        Casa destino = tabuleiro.getCasa(destinoX, destinoY);
+        Peca peca = destino.getPeca();
+        for(int i = 0; i < 8; i++) {
+            for(int j = 0; j < 8; j++) {
+                Casa casa = tabuleiro.getCasa(i,j);
+                if(casa.possuiPeca() && (casa.getPeca().getTipo() == 5 && jogador == 0)){
+                    int k = i+1;
+                    int l = j+1;
+                    while(k < 8 && l < 8){
+                        Casa casaAdversaria = tabuleiro.getCasa(k,l);
+                        if(casaAdversaria.getPeca() == null){
+                            k++;
+                            l++;
+                            continue;
+                        }
+                        else if(casaAdversaria.getPeca().getTipoGeral() == casa.getPeca().getTipoGeral()){
+                             break;
+                        }
+                        else{
+                                if(casaAdversaria.getPeca() instanceof Peao){
+                                    peca.possibilidades(casaAdversaria, destino);
+                                    if(peca.movimentosPossiveis.contains(casa)){
+                                        if(casa.getPeca().getTipo() == 5){
+                                            JOptionPane.showMessageDialog(null, "O rei branco está em XEQUE");
+                                            return true;
+                                        }
+                                    }
+                                    else{
+                                        break;
+                                    }
+                                }
+                                else{
+                                    break;
+                                }
+                        }
+                    }
+                    
+                    k = i-1;
+                    l = j+1;
+                    while(k >= 0 && l < 8){
+                        Casa casaAdversaria = tabuleiro.getCasa(k,l);
+                        if(casaAdversaria.getPeca() == null){
+                            k--;
+                            l++;
+                            continue;
+                        }
+                        else if(casaAdversaria.getPeca().getTipoGeral() == casa.getPeca().getTipoGeral()){
+                             break;
+                        }
+                        else{
+                                if(casaAdversaria.getPeca() instanceof Peao){
+                                    peca.possibilidades(casaAdversaria, destino);
+                                    if(peca.movimentosPossiveis.contains(casa)){
+                                        if(casa.getPeca().getTipo() == 5){
+                                            JOptionPane.showMessageDialog(null, "O rei branco está em XEQUE");
+                                            return true;
+                                        }
+                                    }
+                                    else{
+                                        break;
+                                    }
+                                }
+                                else{
+                                    break;
+                                }
+                        }
+                    }
+                }
+                
+                if(casa.possuiPeca() && (casa.getPeca().getTipo() == 11 && jogador == 1)){
+                    int k = i+1;
+                    int l = j-1;
+                    while(k < 8 && l >= 0){
+                        Casa casaAdversaria = tabuleiro.getCasa(k,l);
+                        if(casaAdversaria.getPeca() == null){
+                            k++;
+                            l--;
+                            continue;
+                        }
+                        else if(casaAdversaria.getPeca().getTipoGeral() == casa.getPeca().getTipoGeral()){
+                             break;
+                        }
+                        else{
+                                if(casaAdversaria.getPeca() instanceof Peao){
+                                    peca.possibilidades(casaAdversaria, destino);
+                                    if(peca.movimentosPossiveis.contains(casa)){
+                                        if(casa.getPeca().getTipo() == 11){
+                                            JOptionPane.showMessageDialog(null, "O rei preto está em XEQUE");
+                                            return true;
+                                        }
+                                    }
+                                    else{
+                                        break;
+                                    }
+                                }
+                                else{
+                                    break;
+                                }
+                        }
+                    }
+                    
+                    k = i-1;
+                    l = j-1;
+                    while(k >= 0 && l >= 0){
+                        Casa casaAdversaria = tabuleiro.getCasa(k,l);
+                        if(casaAdversaria.getPeca() == null){
+                            k--;
+                            l--;
+                            continue;
+                        }
+                        else if(casaAdversaria.getPeca().getTipoGeral() == casa.getPeca().getTipoGeral()){
+                             break;
+                        }
+                        else{
+                                if(casaAdversaria.getPeca() instanceof Peao){
+                                    peca.possibilidades(casaAdversaria, destino);
+                                    if(peca.movimentosPossiveis.contains(casa)){
+                                        if(casa.getPeca().getTipo() == 11){
+                                            JOptionPane.showMessageDialog(null, "O rei preto está em XEQUE");
+                                            return true;
+                                        }
+                                    }
+                                    else{
+                                        break;
                                     }
                                 }
                                 else{
@@ -419,6 +794,86 @@ public class Jogo {
                     }
                 }
             }
+        }
+        return false;
+    }
+    
+    /**
+     * Verifica se cavalo do adversário está atacando o rei do jogador da vez.
+     * @param destinoX linha da Casa de destino da última peça jogada.
+     * @param destinoY coluna da Casa de destino da última peça jogada.
+     * @return true caso o rei do jogador da vez está em xeque
+     */
+    private boolean xequeCavalo(int destinoX, int destinoY){
+        Casa destino = tabuleiro.getCasa(destinoX, destinoY);
+        Peca peca = destino.getPeca();
+        for(int i = 0; i < 8; i++) {
+            for(int j = 0; j < 8; j++) {
+                Casa casa = tabuleiro.getCasa(i,j);
+                if(casa.possuiPeca() && (casa.getPeca().getTipo() == 5 && jogador == 0)){
+                    int cavaloX[] = {casa.getX()+1, casa.getX()-1, casa.getX()+2, casa.getX()-2};
+                    int cavaloY[] = {casa.getY()+1, casa.getY()-1, casa.getY()+2, casa.getY()-2};
+                    
+                    for(int k = 0; k < 4; k++){
+                        for(int l = 0; l < 4; l++){
+                            if((cavaloX[k] >=0 && cavaloX[k] < 8) && (cavaloY[l] >= 0 && cavaloY[l] < 8)){
+                                Casa casaAdversaria = tabuleiro.getCasa(cavaloX[k],cavaloY[l]); 
+                                if(casaAdversaria.getPeca() == null){
+                                    continue;
+                                }
+                                else if(casaAdversaria.getPeca().getTipoGeral() == casa.getPeca().getTipoGeral()){
+                                    break;
+                                }
+                                else{
+                                    if(casaAdversaria.getPeca() instanceof Cavalo){
+                                        peca.possibilidades(casaAdversaria, destino);
+                                        if(peca.movimentosPossiveis.contains(casa)){
+                                            if(casa.getPeca().getTipo() == 5){
+                                                JOptionPane.showMessageDialog(null, "O rei branco está em XEQUE");
+                                                xequeMate(destinoX, destinoY);
+                                                return true;
+                                                
+                                            }
+                                            else{
+                                                JOptionPane.showMessageDialog(null, "O rei preto está em XEQUE");
+                                                return true;
+                                            }
+                                        }
+                                    }
+                                    else{
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                
+            }
+        }
+        return false;
+    }
+    
+    public boolean xequeMate(int destinoX, int destinoY){
+        Casa destino = tabuleiro.getCasa(destinoX, destinoY);
+        Peca peca = destino.getPeca();
+        for(int f = 0; f < 8; f++){
+            for(int g = 0; g < 8; g++){
+                Casa casaAmiga = tabuleiro.getCasa(f,g);
+                
+                if(jogador == 0){
+                    Peca pecaA = casaAmiga.getPeca();
+                    if(pecaA.getTipo() == 4 || pecaA.getTipo() == 3 || pecaA.getTipo() == 2 || pecaA.getTipo() == 0 || pecaA.getTipo() == 5){
+                        pecaA.possibilidades(destino, casaAmiga);
+                        if(pecaA.movimentosPossiveis.isEmpty()){
+                            JOptionPane.showMessageDialog(null, "Xeque-mate!! \n Jogador preto venceu");
+                            return true;
+                        }
+                    }
+                }
+            }
+            
         }
         return false;
     }

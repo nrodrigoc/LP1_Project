@@ -72,8 +72,9 @@ public class JanelaPrincipal extends JFrame {
                 //apagar();      
                 casaClicadaOrigem.atenuar();
                 primeiroClique = true;
+                
                 atualizar();
-                reiPerigo = jogo.check(casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
+                reiPerigo = jogo.xeque(casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
         }
     }
     
@@ -101,7 +102,12 @@ public class JanelaPrincipal extends JFrame {
                                    casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
         }
     }
-        
+    
+    private void xequeMate(){
+        if(jogo.xequeMate(casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY())){
+            criarNovoJogo();
+        }
+    }
     
     /**
      * Construtor da classe.

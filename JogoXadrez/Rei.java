@@ -57,7 +57,36 @@ public class Rei extends Peca
        
     }
     
+    /**
+     * Verifica os possíveis movimentos do rei e adiciona a um ArrayList
+     * @param Casa atual do rei.
+     * @param Casa que irá ser verificada
+     * @return o ArrayList com os possíveis movimentos.
+     */
     public ArrayList<Casa> possibilidades(Casa destino, Casa verifica){
+        movimentosPossiveis.clear();
+        int x = casa.getX();
+        int y = casa.getY();
+        int reiX[] = {x,x+1,x-1};
+        int reiY[] = {y,y+1,y-1};
+        
+        for(int i = 0; i < 3; i++){
+           for(int j = 0; j < 3; j++){ 
+                if((reiX[i] >=0 && reiX[i] < 8) && (reiY[j] >= 0 && reiY[j] < 8)){
+                    verifica = Jogo.tabuleiro.getCasa(reiX[i],reiY[j]);
+                    if(verifica.getPeca() == null){
+                        movimentosPossiveis.add(verifica);
+                    }
+                    else if(verifica.getPeca().getTipoGeral() == getTipoGeral()){
+                        break;
+                    }
+                    else{
+                        movimentosPossiveis.add(verifica);
+                        break;
+                    }
+                }
+           }
+        }
         return movimentosPossiveis;
     }
 }

@@ -14,9 +14,12 @@ public class Rainha extends Peca
     public Rainha(Casa casa, int tipo)
     {
         super(casa, tipo);
-        
     }
 
+    /**
+     * Verifica que tipo de movimento a peça irá fazer
+     * @param Casa destino da peça
+     */
     public void mover(Casa destino){
         if(casa.getX() == destino.getX() || casa.getY() == destino.getY()){
             movimentoComum(destino);
@@ -25,6 +28,10 @@ public class Rainha extends Peca
         }
     }  
     
+    /**
+     * Verifica que tipo de movimento a peça irá fazer
+     * @param Casa destino da peça
+     */
     public void capturar(Casa destino){
         if(casa.getX() == destino.getX() || casa.getY() == destino.getY()){
             capturaComum(destino);
@@ -33,8 +40,9 @@ public class Rainha extends Peca
         }        
     }
     
-    /**Captura de pecas nas direcoes vertical e horizontal
-     * 
+    /**
+     * Captura de pecas nas direcoes vertical e horizontal
+     * @param Casa destino da peça
      */
     
     public void capturaComum(Casa destino){
@@ -82,13 +90,13 @@ public class Rainha extends Peca
         }        
     }
     
-    
+    /**
+     * Movimentação para os lados, para cima e para baixo
+     * @param Casa destino da peça.
+     */
     public void movimentoComum(Casa destino){
         //temPeca - avalia se tem alguma peca no caminho ou se pode ir
         boolean podeIr = false;
-        //if - movimentação para cima e para baixo
-        //else if - movimentação para os lados;
-        //NOVO ALGORITMO
         
         //movimentacao para cima
         if(casa.getX() == destino.getX() && destino.getY() > casa.getY()){
@@ -132,6 +140,10 @@ public class Rainha extends Peca
         }
     }     
     
+    /**
+     * Mover a peça na diagonal
+     * @param Casa destino da peça
+     */
     public void movDiagonal(Casa destino){
         
         boolean podeIr = false;
@@ -185,7 +197,7 @@ public class Rainha extends Peca
     
     /**
      * Captura pecas nas direcoes diagonais
-     * 
+     * @param Casa destino da rainha
      */
     public void capturaDiagonal(Casa destino){
         
@@ -238,15 +250,20 @@ public class Rainha extends Peca
         }         
     }
     
+    /**
+     * Verifica os possíveis movimentos da rainha e adiciona a um ArrayList
+     * @param Casa atual da rainha.
+     * @param Casa que irá ser verificada
+     * @return o ArrayList com os possíveis movimentos.
+     */
     public ArrayList<Casa> possibilidades(Casa casa, Casa verifica){
         movimentosPossiveis.clear();
         int x = casa.getX();
         int y = casa.getY();
-        int posx = x-1;
-        
-        //Casa verifica = tab.getCasa(x,y);
-        while(posx >= 0){
-            verifica = Jogo.tabuleiro.getCasa(posx,y);
+        //movimento horizontal
+        int rainhaX = x-1;
+        while(rainhaX >= 0){
+            verifica = Jogo.tabuleiro.getCasa(rainhaX,y);
             if(verifica.getPeca() == null){
                 movimentosPossiveis.add(verifica);
             }
@@ -257,13 +274,12 @@ public class Rainha extends Peca
                 movimentosPossiveis.add(verifica);
                 break;
             }
-            posx--;
+            rainhaX--;
         }
         
-        posx = x+1;
-        //cap = tab.getCasa(posx, y);
-        while(posx < 8){
-            verifica = Jogo.tabuleiro.getCasa(posx,y);
+        rainhaX = x+1;
+        while(rainhaX < 8){
+            verifica = Jogo.tabuleiro.getCasa(rainhaX,y);
             if(verifica.getPeca() == null){
                 movimentosPossiveis.add(verifica);
             }
@@ -274,13 +290,13 @@ public class Rainha extends Peca
                 movimentosPossiveis.add(verifica);
                 break;
             }
-            posx++;
+            rainhaX++;
         }
         
-        int posy = y-1;
-        //cap = tab.getCasa(x, posy);
-        while(posy >= 0){
-            verifica = Jogo.tabuleiro.getCasa(x,posy);
+        //Movimento vertical
+        int rainhaY = y-1;
+        while(rainhaY >= 0){
+            verifica = Jogo.tabuleiro.getCasa(x,rainhaY);
             
             if(verifica.getPeca() == null){
                 movimentosPossiveis.add(verifica);
@@ -292,13 +308,12 @@ public class Rainha extends Peca
                 movimentosPossiveis.add(verifica);
                 break;
             }
-            posy--;
+            rainhaY--;
         }
         
-        posy = y+1;
-        //cap = tab.getCasa(x, posy);
-        while(posy < 8){
-            verifica = Jogo.tabuleiro.getCasa(x,posy);
+        rainhaY = y+1;
+        while(rainhaY < 8){
+            verifica = Jogo.tabuleiro.getCasa(x,rainhaY);
             
             if(verifica.getPeca() == null){
                 movimentosPossiveis.add(verifica);
@@ -310,7 +325,80 @@ public class Rainha extends Peca
                 movimentosPossiveis.add(verifica);
                 break;
             }
-            posy++;
+            rainhaY++;
+        }
+        
+        //Movimento diagonal
+        rainhaX = x+1;
+        rainhaY = y+1;
+        while(rainhaX < 8 && rainhaY < 8){
+            verifica = Jogo.tabuleiro.getCasa(rainhaX,rainhaY);
+            if(verifica.getPeca() == null){
+                movimentosPossiveis.add(verifica);
+            }
+            else if(verifica.getPeca().getTipoGeral() == getTipoGeral()){
+                break;
+            }
+            else{
+                movimentosPossiveis.add(verifica);
+                break;
+            }
+            rainhaX++;
+            rainhaY++;
+        }
+        
+        rainhaX = x-1;
+        rainhaY = y-1;
+        while(rainhaX >= 0 && rainhaY >= 0){
+            verifica = Jogo.tabuleiro.getCasa(rainhaX,rainhaY);
+            if(verifica.getPeca() == null){
+                movimentosPossiveis.add(verifica);
+            }
+            else if(verifica.getPeca().getTipoGeral() == getTipoGeral()){
+                break;
+            }
+            else{
+                movimentosPossiveis.add(verifica);
+                break;
+            }
+            rainhaX--;
+            rainhaY--;
+        }
+        
+        rainhaX = x-1;
+        rainhaY = y+1;
+        while(rainhaX >= 0 && rainhaY < 8){
+            verifica = Jogo.tabuleiro.getCasa(rainhaX,rainhaY);
+            if(verifica.getPeca() == null){
+                movimentosPossiveis.add(verifica);
+            }
+            else if(verifica.getPeca().getTipoGeral() == getTipoGeral()){
+                break;
+            }
+            else{
+                movimentosPossiveis.add(verifica);
+                break;
+            }
+            rainhaX--;
+            rainhaY++;
+        }
+        
+        rainhaX = x+1;
+        rainhaY = y-1;
+        while(rainhaX < 8 && rainhaY >= 0){
+            verifica = Jogo.tabuleiro.getCasa(rainhaX,rainhaY);
+            if(verifica.getPeca() == null){
+                movimentosPossiveis.add(verifica);
+            }
+            else if(verifica.getPeca().getTipoGeral() == getTipoGeral()){
+                break;
+            }
+            else{
+                movimentosPossiveis.add(verifica);
+                break;
+            }
+            rainhaX++;
+            rainhaY--;
         }
         return movimentosPossiveis;
     }

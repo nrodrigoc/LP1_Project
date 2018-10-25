@@ -121,13 +121,18 @@ public class Torre extends Peca
         
     }
     
+    /**
+     * Verifica os possíveis movimentos da torre e adiciona a um ArrayList
+     * @param Casa atual da torre.
+     * @param Casa que irá ser verificada
+     * @return o ArrayList com os possíveis movimentos.
+     */
     public ArrayList<Casa> possibilidades(Casa casa, Casa verifica){
         movimentosPossiveis.clear();
         int x = casa.getX();
         int y = casa.getY();
         int posx = x-1;
         
-        //Casa verifica = tab.getCasa(x,y);
         while(posx >= 0){
             verifica = Jogo.tabuleiro.getCasa(posx,y);
             if(verifica.getPeca() == null){
@@ -144,7 +149,6 @@ public class Torre extends Peca
         }
         
         posx = x+1;
-        //cap = tab.getCasa(posx, y);
         while(posx < 8){
             verifica = Jogo.tabuleiro.getCasa(posx,y);
             if(verifica.getPeca() == null){
@@ -161,7 +165,6 @@ public class Torre extends Peca
         }
         
         int posy = y-1;
-        //cap = tab.getCasa(x, posy);
         while(posy >= 0){
             verifica = Jogo.tabuleiro.getCasa(x,posy);
             
@@ -179,7 +182,6 @@ public class Torre extends Peca
         }
         
         posy = y+1;
-        //cap = tab.getCasa(x, posy);
         while(posy < 8){
             verifica = Jogo.tabuleiro.getCasa(x,posy);
             

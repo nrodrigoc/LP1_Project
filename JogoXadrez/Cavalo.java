@@ -54,6 +54,12 @@ public class Cavalo extends Peca
         }
     }
     
+    /**
+     * Verifica os possíveis movimentos do cavalo e adiciona a um ArrayList
+     * @param Casa atual do cavalo.
+     * @param Casa que irá ser verificada
+     * @return o ArrayList com os possíveis movimentos.
+     */
     public ArrayList<Casa> possibilidades(Casa casa, Casa verifica){
         movimentosPossiveis.clear();
         int x = casa.getX();

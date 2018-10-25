@@ -130,7 +130,87 @@ public class Bispo extends Peca
            
     }        
     
+    /**
+     * Verifica os possíveis movimentos do bispo e adiciona a um ArrayList
+     * @param Casa atual do bispo.
+     * @param Casa que irá ser verificada
+     * @return o ArrayList com os possíveis movimentos.
+     */
     public ArrayList<Casa> possibilidades(Casa casa, Casa verifica){
+        movimentosPossiveis.clear();
+        int x = casa.getX();
+        int y = casa.getY();
+        int bispoX = x+1;
+        int bispoY = y+1;
+        while(bispoX < 8 && bispoY < 8){
+            verifica = Jogo.tabuleiro.getCasa(bispoX,bispoY);
+            if(verifica.getPeca() == null){
+                movimentosPossiveis.add(verifica);
+            }
+            else if(verifica.getPeca().getTipoGeral() == getTipoGeral()){
+                break;
+            }
+            else{
+                movimentosPossiveis.add(verifica);
+                break;
+            }
+            bispoX++;
+            bispoY++;
+        }
+        
+        bispoX = x-1;
+        bispoY = y-1;
+        while(bispoX >= 0 && bispoY >= 0){
+            verifica = Jogo.tabuleiro.getCasa(bispoX,bispoY);
+            if(verifica.getPeca() == null){
+                movimentosPossiveis.add(verifica);
+            }
+            else if(verifica.getPeca().getTipoGeral() == getTipoGeral()){
+                break;
+            }
+            else{
+                movimentosPossiveis.add(verifica);
+                break;
+            }
+            bispoX--;
+            bispoY--;
+        }
+        
+        bispoX = x+1;
+        bispoY = y-1;
+        while(bispoX < 8 && bispoY >= 0){
+            verifica = Jogo.tabuleiro.getCasa(bispoX,bispoY);
+            if(verifica.getPeca() == null){
+                movimentosPossiveis.add(verifica);
+            }
+            else if(verifica.getPeca().getTipoGeral() == getTipoGeral()){
+                break;
+            }
+            else{
+                movimentosPossiveis.add(verifica);
+                break;
+            }
+            bispoX++;
+            bispoY--;
+        }
+        
+        bispoX = x-1;
+        bispoY = y+1;
+        while(bispoX >= 0 && bispoY < 8){
+            verifica = Jogo.tabuleiro.getCasa(bispoX,bispoY);
+            if(verifica.getPeca() == null){
+                movimentosPossiveis.add(verifica);
+            }
+            else if(verifica.getPeca().getTipoGeral() == getTipoGeral()){
+                break;
+            }
+            else{
+                movimentosPossiveis.add(verifica);
+                break;
+            }
+            bispoX--;
+            bispoY++;
+        }
         return movimentosPossiveis;
     }
 }

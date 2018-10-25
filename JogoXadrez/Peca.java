@@ -142,14 +142,12 @@ public abstract class Peca {
     public void setPassant(boolean b){
         this.enPassant = b;
     }
-    
-    
+
     /**
      * @return true se for o primeiro movimento da peca
      */
     public boolean getMovimento(){
         return primeiroMovimento;
     }  
-    
-    
+
 }
