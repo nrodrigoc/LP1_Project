@@ -2,10 +2,10 @@
 import java.util.ArrayList;
 
 /**
- * Escreva a descrição da classe Peao aqui.
  * 
- * @author (seu nome) 
- * @version (número de versão ou data)
+ * @author Luciane Falcao
+ * @author Nathan Rodrigo
+ * 
  */
 public class Peao extends Peca
 {
@@ -38,12 +38,22 @@ public class Peao extends Peca
             //else if - verifica se o peão é preto e se o movimento é apenas para baixo
             if(tipo == PEAO_BRANCO && (casa.getX() == destino.getX() &&
                 (casa.getY()+2 == destino.getY() || casa.getY()+1 == destino.getY()))){
-              super.mover(destino);
+              if(casa.getY()+1 == destino.getY()){
+                  super.mover(destino);
+              }else if(casa.getY()+2 == destino.getY() &&
+              !Jogo.getTabuleiro().getCasa(casa.getX(), casa.getY()+1).possuiPeca()){
+                  super.mover(destino);
+               }
               enPassant = podePassant(origem, destino);
             }
             else if(tipo == PEAO_PRETO && (casa.getX() == destino.getX() &&
                     (casa.getY()-2 == destino.getY() || casa.getY()-1 == destino.getY()))){
-               super.mover(destino);
+              if(casa.getY()-1 == destino.getY()){
+                  super.mover(destino);
+              }else if(casa.getY()-2 == destino.getY() &&
+              !Jogo.getTabuleiro().getCasa(casa.getX(), casa.getY()-1).possuiPeca()){
+                  super.mover(destino);
+               }
                enPassant = podePassant(origem, destino);
             }
             
@@ -104,16 +114,6 @@ public class Peao extends Peca
             int peaoX = x+1;
             int peaoY = y+1;
             
-            /*if(peaoY < 8){
-                verifica = Jogo.tabuleiro.getCasa(x,peaoY);
-                if(verifica.getPeca() == null){
-                    movimentosPossiveis.add(verifica);
-                }
-                else if(verifica.getPeca().getTipoGeral() != getTipoGeral()){
-                    movimentosPossiveis.add(verifica);
-                }
-            }*/
-            
             if(peaoX < 8 && peaoY < 8){
                 verifica = Jogo.tabuleiro.getCasa(peaoX,peaoY);
                 if(verifica.getPeca() != null && verifica.getPeca().getTipoGeral() != getTipoGeral()){
@@ -133,17 +133,7 @@ public class Peao extends Peca
         else if(getTipo() == PEAO_PRETO){
             int peaoX = x+1;
             int peaoY = y-1;
-            
-            /*if(peaoY < 8){
-                verifica = Jogo.tabuleiro.getCasa(x,peaoY);
-                if(verifica.getPeca() == null){
-                    movimentosPossiveis.add(verifica);
-                }
-                else if(verifica.getPeca().getTipoGeral() != getTipoGeral()){
-                    movimentosPossiveis.add(verifica);
-                }
-            }*/
-            
+                     
             if(peaoX < 8 && peaoY < 8){
                 verifica = Jogo.tabuleiro.getCasa(peaoX,peaoY);
                 if(verifica.getPeca() != null && verifica.getPeca().getTipoGeral() != getTipoGeral()){
@@ -162,4 +152,6 @@ public class Peao extends Peca
         }
         return movimentosPossiveis;
     }
+    
+   
 }

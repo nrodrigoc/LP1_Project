@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 /**
- * Escreva a descrição da classe Torre aqui.
  * 
- * @author (seu nome) 
- * @version (número de versão ou data)
+ * @author Luciane Falcao
+ * @author Nathan Rodrigo
+ * 
  */
 public class Rainha extends Peca
 {
@@ -89,6 +89,7 @@ public class Rainha extends Peca
             super.capturar(destino);
         }        
     }
+    
     
     /**
      * Movimentação para os lados, para cima e para baixo
@@ -402,5 +403,6 @@ public class Rainha extends Peca
         }
         return movimentosPossiveis;
     }
+    
     
 }

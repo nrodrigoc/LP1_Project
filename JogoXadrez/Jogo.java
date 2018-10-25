@@ -3,16 +3,18 @@ import javax.swing.JOptionPane;
 
 /**
  * Armazena o tabuleiro e responsavel por posicionar as pecas.
- * 
- * @author Alan Moraes &lt;alan@ci.ufpb.br&gt;
- * @author Leonardo Villeth &lt;lvilleth@cc.ci.ufpb.br&gt;
+ *
+ * @author Luciane Falcao
+ * @author Nathan Rodrigo
  */
+
 public class Jogo {
 
     public static Tabuleiro tabuleiro;
     private int jogador;
     private boolean movimentoPermitido;
     public static ArrayList<Peca> peoes; 
+    
     
     public Jogo() {
         peoes = new ArrayList<>();
@@ -533,13 +535,15 @@ public class Jogo {
                         else{
                                 if(casaAdversaria.getPeca() instanceof Torre || (casaAdversaria.getPeca() instanceof Rainha)){
                                     peca.possibilidades(casaAdversaria, destino);
-                                    if(peca.movimentosPossiveis.contains(casaAdversaria)){
+                                    if(peca.movimentosPossiveis.contains(casa)){
                                         if(casa.getPeca().getTipo() == 5){
                                             JOptionPane.showMessageDialog(null, "O rei branco está em XEQUE");
                                             return true;
                                         }
                                         else{
                                             JOptionPane.showMessageDialog(null, "O rei preto está em XEQUE");
+                                            
+
                                             return true;
                                         }
                                     }
@@ -598,6 +602,7 @@ public class Jogo {
                                     if(peca.movimentosPossiveis.contains(casa)){
                                         if(casa.getPeca().getTipo() == 5){
                                             JOptionPane.showMessageDialog(null, "O rei branco está em XEQUE");
+                                            
                                             return true;
                                         }
                                         else{
@@ -778,7 +783,7 @@ public class Jogo {
                                 if(casaAdversaria.getPeca() instanceof Peao){
                                     peca.possibilidades(casaAdversaria, destino);
                                     if(peca.movimentosPossiveis.contains(casa)){
-                                        if(casa.getPeca().getTipo() == 11){
+                                        if(casa.getPeca().getTipo() == Peca.REI_PRETO){
                                             JOptionPane.showMessageDialog(null, "O rei preto está em XEQUE");
                                             return true;
                                         }
@@ -818,7 +823,7 @@ public class Jogo {
                         for(int l = 0; l < 4; l++){
                             if((cavaloX[k] >=0 && cavaloX[k] < 8) && (cavaloY[l] >= 0 && cavaloY[l] < 8)){
                                 Casa casaAdversaria = tabuleiro.getCasa(cavaloX[k],cavaloY[l]); 
-                                if(casaAdversaria.getPeca() == null){
+                                if(!casaAdversaria.possuiPeca()){
                                     continue;
                                 }
                                 else if(casaAdversaria.getPeca().getTipoGeral() == casa.getPeca().getTipoGeral()){
@@ -828,9 +833,10 @@ public class Jogo {
                                     if(casaAdversaria.getPeca() instanceof Cavalo){
                                         peca.possibilidades(casaAdversaria, destino);
                                         if(peca.movimentosPossiveis.contains(casa)){
-                                            if(casa.getPeca().getTipo() == 5){
+                                            if(casa.getPeca().getTipo() == Peca.REI_BRANCO){
                                                 JOptionPane.showMessageDialog(null, "O rei branco está em XEQUE");
-                                                xequeMate(destinoX, destinoY);
+    
+                                           
                                                 return true;
                                                 
                                             }
@@ -855,28 +861,7 @@ public class Jogo {
         return false;
     }
     
-    public boolean xequeMate(int destinoX, int destinoY){
-        Casa destino = tabuleiro.getCasa(destinoX, destinoY);
-        Peca peca = destino.getPeca();
-        for(int f = 0; f < 8; f++){
-            for(int g = 0; g < 8; g++){
-                Casa casaAmiga = tabuleiro.getCasa(f,g);
-                
-                if(jogador == 0){
-                    Peca pecaA = casaAmiga.getPeca();
-                    if(pecaA.getTipo() == 4 || pecaA.getTipo() == 3 || pecaA.getTipo() == 2 || pecaA.getTipo() == 0 || pecaA.getTipo() == 5){
-                        pecaA.possibilidades(destino, casaAmiga);
-                        if(pecaA.movimentosPossiveis.isEmpty()){
-                            JOptionPane.showMessageDialog(null, "Xeque-mate!! \n Jogador preto venceu");
-                            return true;
-                        }
-                    }
-                }
-            }
-            
-        }
-        return false;
-    }
+    
     
     /**
      * retira o passant depois de uma rodada

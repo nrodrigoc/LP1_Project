@@ -1,9 +1,8 @@
 import java.util.ArrayList;
 /**
- * Escreva a descrição da classe Cavalo aqui.
+ * @author Luciane Falcao
+ * @author Nathan Rodrigo
  * 
- * @author (seu nome) 
- * @version (número de versão ou data)
  */
 public class Cavalo extends Peca
 {
@@ -16,6 +15,11 @@ public class Cavalo extends Peca
         super(casa, tipo);        
     }
     
+    
+    /**
+     * Movimenta a peca para uma nova casa.
+     * @param destino nova casa que ira conter esta peca.
+     */
     public void mover(Casa destino){
         //Movimenta 2 casas para cima e uma para direita ou esquerda
         if(casa.getX()+1 == destino.getX() && casa.getY()+2 == destino.getY() || casa.getX()-1 == destino.getX() && casa.getY()+2 == destino.getY()){
@@ -36,6 +40,12 @@ public class Cavalo extends Peca
        
     }
     
+    
+    /**
+     * Faz a captura de uma peça.
+     * @param destino nova casa que irá conter esta peca.
+     * @param capturada a casa que conter a peça que será capturada.
+     */
     public void capturar(Casa destino){
         if(casa.getX()+1 == destino.getX() && casa.getY()+2 == destino.getY() || casa.getX()-1 == destino.getX() && casa.getY()+2 == destino.getY()){
             super.capturar(destino);
@@ -86,4 +96,6 @@ public class Cavalo extends Peca
         }
         return movimentosPossiveis;
     }
+    
+    
 }

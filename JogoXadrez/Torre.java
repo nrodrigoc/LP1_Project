@@ -1,15 +1,14 @@
 
 import java.util.ArrayList;
 /**
- * Escreva a descrição da classe Torre aqui.
  * 
- * @author (seu nome) 
- * @version (número de versão ou data)
+ * @author Luciane Falcao
+ * @author Nathan Rodrigo
+ * 
  */
 public class Torre extends Peca
 {
     
-    //public Casa pos[][];
     /**
      * Construtor para objetos da classe Torre
      */
@@ -17,7 +16,12 @@ public class Torre extends Peca
     {
         super(casa, tipo);
     }
-
+    
+    
+    /**
+     * Movimenta a peca para uma nova casa.
+     * @param destino nova casa que ira conter esta peca.
+     */
     public void mover(Casa destino){
         //temPeca - avalia se tem alguma peca no caminho ou se pode ir
         boolean podeIr = false;
@@ -72,6 +76,11 @@ public class Torre extends Peca
         
     }
     
+    /**
+     * Faz a captura de uma peça.
+     * @param destino nova casa que irá conter esta peca.
+     * @param capturada a casa que conter a peça que será capturada.
+     */
     public void capturar(Casa destino){
         //podeCapturar - avalia se pode pode capturar a peca alvo
         boolean podeCapturar = false;

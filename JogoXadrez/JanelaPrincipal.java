@@ -96,16 +96,13 @@ public class JanelaPrincipal extends JFrame {
         }
     }
     
+    /**
+     * verifica se a peca clicada eh um peao
+     */
     private void promocaoPeao(){
-        if(casaClicadaOrigem.getCorPeao() == 2 || casaClicadaOrigem.getCorPeao() == 3){
+        if(casaClicadaOrigem.getCorPeao() == CasaGUI.PEAOBRANCO || casaClicadaOrigem.getCorPeao() == CasaGUI.PEAOPRETO){
             jogo.promocao(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), 
                                    casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
-        }
-    }
-    
-    private void xequeMate(){
-        if(jogo.xequeMate(casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY())){
-            criarNovoJogo();
         }
     }
     

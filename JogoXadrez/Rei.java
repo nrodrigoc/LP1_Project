@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 /**
- * Escreva a descrição da classe Rei aqui.
  * 
- * @author (seu nome) 
- * @version (número de versão ou data)
+ * @author Luciane Falcao
+ * @author Nathan Rodrigo
+ * 
  */
 public class Rei extends Peca
 {

@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 /**
- * Escreva a descrição da classe Bispo aqui.
  * 
- * @author (seu nome) 
- * @version (número de versão ou data)
+ * @author Luciane Falcao
+ * @author Nathan Rodrigo
+ * 
  */
 public class Bispo extends Peca
 {
@@ -76,6 +76,11 @@ public class Bispo extends Peca
         }        
     }
     
+    /**
+     * Faz a captura de uma peça.
+     * @param destino nova casa que irá conter esta peca.
+     * @param capturada a casa que conter a peça que será capturada.
+     */
     public void capturar(Casa destino){
         boolean podeIr = false;
         int destinoX = destino.getX();
@@ -213,4 +218,6 @@ public class Bispo extends Peca
         }
         return movimentosPossiveis;
     }
+    
+    
 }

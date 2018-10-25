@@ -2,9 +2,10 @@ import java.util.ArrayList;
 /**
  * Representa uma Peca do jogo.
  * Possui uma casa e um tipo associado.
+ *
+ * @author Luciane Falcao
+ * @author Nathan Rodrigo
  * 
- * @author Alan Moraes &lt;alan@ci.ufpb.br&gt;
- * @author Leonardo Villeth &lt;lvilleth@cc.ci.ufpb.br&gt;
  */
 public abstract class Peca {
     
@@ -28,9 +29,9 @@ public abstract class Peca {
     protected Casa casa;
     protected int tipo;
     protected ArrayList<Casa> movimentosPossiveis;
+
+
     private int tipoGeral;
-    public abstract ArrayList<Casa> possibilidades(Casa casa, Casa verifica);
-    
     //enPassant - guarda "true" caso o Peao esteja em "en Passant"
     protected boolean enPassant;
     //primeiroMovimento - guarda "true" a peca ainda nao se movimentou na partida
@@ -45,6 +46,8 @@ public abstract class Peca {
         casa.colocarPeca(this);
         enPassant = false;
     }
+    
+    public abstract ArrayList<Casa> possibilidades(Casa casa, Casa verifica);
     
     /**
      * Movimenta a peca para uma nova casa.
